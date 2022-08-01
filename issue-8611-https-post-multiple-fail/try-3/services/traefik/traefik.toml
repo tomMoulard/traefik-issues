@@ -1,0 +1,81 @@
+################################################################
+# Static configuration
+################################################################
+
+# [global]
+  # sendAnonymousUsage = false
+
+# [serversTransport]
+	# insecureSkipVerify = true
+	# [serversTransport.forwardingTimeouts]
+		# Apache KeepAliveTimeout is set at 5 secondes, traefik idleConnTimeout must be lower
+		# idleConnTimeout = 4
+
+[entryPoints]
+
+  [entryPoints.http]
+  address = ":80"
+    # [entryPoints.http.proxyProtocol]
+		# trustedIPs = ["127.0.0.0/8", "10.0.0.0/8", "192.168.0.0/16", "172.16.0.0/12", "169.254.0.0/16"]
+    # [entryPoints.http.forwardedHeaders]
+		# trustedIPs = ["127.0.0.0/8", "10.0.0.0/8", "192.168.0.0/16", "172.16.0.0/12", "169.254.0.0/16"]
+
+  [entryPoints.https]
+  address = ":443"
+    # [entryPoints.https.proxyProtocol]
+      # trustedIPs = ["127.0.0.0/8", "10.0.0.0/8", "192.168.0.0/16", "172.16.0.0/12", "169.254.0.0/16"]
+    # [entryPoints.https.forwardedHeaders]
+      # trustedIPs = ["127.0.0.0/8", "10.0.0.0/8", "192.168.0.0/16", "172.16.0.0/12", "169.254.0.0/16"]
+
+[providers]
+
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    watch = true
+    exposedByDefault = false
+    swarmMode = false
+
+  # [providers.file]
+    # filename = "/etc/traefik/traefik.toml"
+    # watch = true
+
+# [api]
+  # dashboard = true
+  # debug = false
+
+# [log]
+  # Accepted values, in order of severity: "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "PANIC"
+  # level = "ERROR"
+
+# Uncomment to activate access log ("docker logs tools-traefik" to view them)
+# [accessLog]
+
+
+################################################################
+# Dynamic configuration
+################################################################
+
+# [http.routers.api-dashboard]
+  # entryPoints = ["http"]
+  # rule = "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+  # priority = 1000
+  # service = "api@internal"
+
+# [http.middlewares]
+
+  # [http.middlewares.redirectscheme-https.redirectScheme]
+    # scheme = "https"
+	# permanent = true
+	# port = "443"
+
+# [tls]
+
+  # [[tls.certificates]]
+    # certFile = "/etc/traefik/certs/certificate.crt"
+    # keyFile = "/etc/traefik/certs/certificate.key"
+
+  # [tls.stores]
+    # [tls.stores.default]
+      # [tls.stores.default.defaultCertificate]
+        # certFile = "/etc/traefik/certs/certificate.crt"
+        # keyFile  = "/etc/traefik/certs/certificate.key"

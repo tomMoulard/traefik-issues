@@ -1,0 +1,14 @@
+FROM httpd:2.4.51
+
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+
+RUN apt-get -y update
+RUN apt-get install -y nano vim
+
+# You can make a diff with the "*.ori" file in the source directory to see difference of default configuration, just needed module have been activated
+COPY ./my-httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY ./my-httpd-ssl.conf /usr/local/apache2/conf/extra/httpd-ssl.conf
+COPY ./my-project.conf /usr/local/apache2/conf/project.conf
+RUN echo "Include conf/project.conf" >> /usr/local/apache2/conf/httpd.conf
+
+# Apache can be reload from inside the container after live modification with : "/etc/init.d/apache2 reload"

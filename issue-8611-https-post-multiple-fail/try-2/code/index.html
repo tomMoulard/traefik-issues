@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Test ajax post</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<h1>Test image ajax post one-by-one in parallels with traefik and apache/php-fpm as backend</h1>
+
+<p>Get 30 files, 1024x768, quality 70 from here please: <a href="https://unsample.net/" target="_blank">https://unsample.net/</a></p>
+<p>Accessing this page through <i>https://localhost</i> will make use of traefik in front of apache: <b>some upload will fail with 408 errors and some will lag/freeze</b> (starting from choosing around 20-25 Mo total size of photos: problems occurs).</p>
+<p>Accessing this page through <i>https://localhost:8087</i> will make use directly of apache (no traefik in front): all upload will be rapidly uploaded.</p>
+
+<h2>Results: <span id="result-nbi-done"></span> <span id="result-nbi-fail"></span> <span id="result-finished"></span></h2>
+<div id="result"></div>
+
+<br><br>
+
+<form action="#">
+  <label for="files">Select files:</label>
+  <input type="file" id="files" name="files" multiple><br><br>
+  <input type="button" id="submit" value='Upload'>
+</form>
+
+<script>
+$( document ).ready(function() {
+	console.log( "ready!" );
+	
+	$("#submit").on("click", function(){
+		let nbI = document.getElementById('files').files.length;
+		if (nbI === 0) { alert("Please choose at least one file."); return; }
+		
+		$("#submit").hide();
+		$("#result-finished").html('Please wait, will start soon...');
+		$("#result").html("");
+		$("#result-nbi-done").html("");
+		$("#result-nbi-fail").html("");
+
+		let nbIDone = 0;
+		let nbIFail = 0;
+		for (let i = 0; i < nbI; i++) {
+			console.log('Request number ' + i);
+			$("#result").append('Request number ' + i + ': <span id="request-' + i + '"></span><br>');
+			
+			var form_data = new FormData();
+			form_data.append("files[]", document.getElementById('files').files[i]);
+			
+			$.ajax({
+				url: '/upload-files.php?i=' + i,
+				//url: '/upload-files.php',
+				method: "post",
+				data: form_data,
+				contentType: false,
+				processData: false,
+			}).done(function(result) {
+				nbIDone++;
+				console.log('Request response ' + result + " (done: " + nbIDone + "/" + nbI + ")");
+				$("#request-" + result).append("response " + result + " received (done: " + nbIDone + "/" + nbI + ")");
+				$("#result-nbi-done").html("(done: " + nbIDone + "/" + nbI + ")");
+				$("#result-finished").html("Running...");
+				if ((nbIDone + nbIFail) === nbI) { $("#submit").show(); $("#result-finished").html("FINISHED"); $("#files").val(""); }
+			})
+			.fail(function() {
+				nbIFail++;
+				$("#result-nbi-fail").html("(fail: " + nbIFail + "/" + nbI + ")");
+				$("#result-finished").html("Running...");
+				if ((nbIDone + nbIFail) === nbI) { $("#submit").show(); $("#result-finished").html("FINISHED"); $("#files").val(""); }
+			});
+		}
+	});
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+version: "3.7"
+
+services:
+    apache:
+        build: ./services/apache/
+        image: myproject/apache
+        container_name: myproject-apache
+        hostname: myproject-apache
+        depends_on:
+            - php
+        environment:
+            - "TZ=Europe/Paris"
+            - "FPM_HOST=unix:/run/php/php8.0-fpm.sock|fcgi://localhost/"
+            - "FPM_TIMEOUT=36000"
+        # Use :8087 to bypass traefik and directly request apache (the bug will no more be here and all images will upload fine as intended)
+        ports:
+            - "8086:80"
+            - "8087:443"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.myproject-apache-http.entrypoints=http"
+            - "traefik.http.routers.myproject-apache-http.rule=HostRegexp(`{host:.+}`)"
+            - "traefik.http.routers.myproject-apache-https.entrypoints=https"
+            - "traefik.http.routers.myproject-apache-https.rule=HostRegexp(`{host:.+}`)"
+            - "traefik.http.routers.myproject-apache-https.tls=true"
+            # - "traefik.http.routers.myproject-apache-http.middlewares=redirectscheme-https@file"
+            # - "traefik.http.services.myproject-apache.loadbalancer.server.scheme=https"
+            # - "traefik.http.services.myproject-apache.loadbalancer.server.port=443"
+        volumes:
+            - "./code:/var/www/html:cached"
+            - "./certificates/ecc384:/var/www/certificates:ro"
+            - "php-socket:/run/php:ro"
+    php:
+        build: ./services/php-fpm/
+        image: myproject/php-fpm
+        container_name: myproject-php
+        hostname: myproject-php
+        environment:
+            - "TZ=Europe/Paris"
+        volumes:
+            - "./code:/var/www/html:cached"
+            - "php-socket:/run/php"
+    traefik:
+        image: traefik:v2.5.5
+        container_name: myproject-traefik
+        hostname: myproject-traefik
+        ports:
+            - "80:80"
+            - "443:443"
+        environment:
+            - "TZ=Europe/Paris"
+        volumes:
+            - "./certificates/ecc384:/etc/traefik/certs:ro"
+            - "./services/traefik/traefik.toml:/etc/traefik/traefik.toml:ro"
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+volumes:
+    php-socket:

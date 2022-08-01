@@ -1,0 +1,23 @@
+FROM php:8.0.13-fpm
+
+RUN apt-get -y update
+RUN apt-get install -y nano vim
+
+RUN mkdir -p /usr/local/etc/php
+
+# PHP config
+RUN echo "post_max_size = 128M" >> /usr/local/etc/php/php.ini
+RUN echo "upload_max_filesize = 128M" >> /usr/local/etc/php/php.ini
+RUN echo "max_file_uploads = 256" >> /usr/local/etc/php/php.ini
+RUN echo "max_execution_time = 600" >> /usr/local/etc/php/php.ini
+RUN echo "max_input_time = 600" >> /usr/local/etc/php/php.ini
+RUN echo "memory_limit = 512M" >> /usr/local/etc/php/php.ini
+
+# PHP-FPM config
+RUN sed -ri -e 's!listen = 127.0.0.1:9000!listen = /run/php/php8.0-fpm.sock!g' /usr/local/etc/php-fpm.d/www.conf
+RUN sed -ri -e 's!;listen.owner = www-data!listen.owner = www-data!g' /usr/local/etc/php-fpm.d/www.conf
+RUN sed -ri -e 's!;listen.group = www-data!listen.group = www-data!g' /usr/local/etc/php-fpm.d/www.conf
+RUN sed -ri -e 's!listen = 9000!;listen = 9000!g' /usr/local/etc/php-fpm.d/zz-docker.conf
+RUN sed -ri -e 's!;pid = run/php-fpm.pid!pid = /run/php/php8.0-fpm.pid!g' /usr/local/etc/php-fpm.conf
+
+# Apache can be reload from inside the container after live modification with : "kill -USR2 1"

@@ -1,0 +1,49 @@
+################################################################
+# Static configuration
+################################################################
+
+[global]
+	sendAnonymousUsage = false
+
+[serversTransport]
+	insecureSkipVerify = true
+	[serversTransport.forwardingTimeouts]
+		# Apache KeepAliveTimeout is set at 5 secondes, traefik idleConnTimeout must be lower
+		idleConnTimeout = 4
+
+[entryPoints]
+	[entryPoints.http]
+		address = ":8000"
+	[entryPoints.https]
+		address = ":8443"
+
+[providers]
+	[providers.docker]
+		endpoint = "unix:///var/run/docker.sock"
+		watch = true
+		exposedByDefault = false
+		swarmMode = false
+	[providers.file]
+		filename = "/home/tm/workspace/traefik/issue-8611-https-post-multiple-fail/5-uploaded/services/traefik/traefik.toml"
+		watch = true
+
+[api]
+	insecure = true
+
+[log]
+	level = "DEBUG"
+
+
+################################################################
+# Dynamic configuration
+################################################################
+
+[tls]
+	[[tls.certificates]]
+		certFile = "/home/tm/workspace/traefik/issue-8611-https-post-multiple-fail/5-uploaded/certificates/ecc384/certificate.crt"
+		keyFile = "/home/tm/workspace/traefik/issue-8611-https-post-multiple-fail/5-uploaded/certificates/ecc384/certificate.key"
+	[tls.stores]
+		[tls.stores.default]
+			[tls.stores.default.defaultCertificate]
+				certFile = "/home/tm/workspace/traefik/issue-8611-https-post-multiple-fail/5-uploaded/certificates/ecc384/certificate.crt"
+				keyFile  = "/home/tm/workspace/traefik/issue-8611-https-post-multiple-fail/5-uploaded/certificates/ecc384/certificate.key"
