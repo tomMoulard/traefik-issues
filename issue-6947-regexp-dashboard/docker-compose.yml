@@ -1,0 +1,27 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:v2.6
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.middlewares.test-redirectregex.redirectregex.regex: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      traefik.http.middlewares.test-redirectregex.redirectregex.replacement: Lorem ipsum dolor sit amet, consectetur adipisicing elit
+      traefik.http.middlewares.test-replacepathregex.replacepathregex.regex: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      traefik.http.middlewares.test-replacepathregex.replacepathregex.replacement: Lorem ipsum dolor sit amet, consectetur adipisicing elit
+      traefik.http.middlewares.test-stripprefixregex.stripprefixregex.regex: Loremipsumdolorsitamet,consecteturadipisicingelit,seddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.Utenimadminimveniam,quisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequat.Duisauteiruredolorinreprehenderitinvoluptatevelitessecillumdoloreeufugiatnullapariatur.Excepteursintoccaecatcupidatatnonproident,suntinculpaquiofficiadeseruntmollitanimidestlaborum.

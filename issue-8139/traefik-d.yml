@@ -1,0 +1,52 @@
+# Dynamic configuration
+http:
+
+  middlewares:
+    # Security Headers
+    secureHeaders:
+      headers:
+        stsSeconds: 31536000                # Strict-Transport-Security
+        stsIncludeSubdomains: true
+        stsPreload: true
+        browserXssFilter: true              # X-XSS-Protection
+        customFrameOptionsValue: "SAMEORIGIN" # X-Frame-Options
+        contentTypeNosniff: true            # X-Content-Type-Options
+        referrerPolicy: "strict-origin-when-cross-origin"   # Referrer-Policy
+
+    user-auth:
+      basicAuth:
+        users:
+          # generate:
+          # echo $(htpasswd -nb <username> <password>)
+          - "tm:$apr1$U5cKiwfX$HH1PfkmtklJrhk.F.BgcV."
+
+    duplicatiAuth:
+      basicAuth:
+        users:
+          - "tm2:$apr1$U5cKiwfX$HH1PfkmtklJrhk.F.BgcV."
+
+  routers:
+    traefik-mailcow:
+      rule: "Host(`mail.localhost`)"
+      tls:
+        certResolver: letsencrypt
+      entrypoints: websecure
+      service: traefik-mailcow-service
+
+  services:
+    traefik-mailcow-service:
+      loadBalancer:
+        servers:
+          - url: http://localhost:8080/
+
+tls:
+  options:
+    default:
+      cipherSuites:
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+      minVersion: VersionTLS12

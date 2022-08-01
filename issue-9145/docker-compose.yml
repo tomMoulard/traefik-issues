@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  traefik:
+    # The official v2 Traefik docker image
+    image: traefik:2.7.2
+    tty: true
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --log.level=DEBUG --api.insecure=true --providers.docker --entryPoints.web.address=:80 --entryPoints.websecure.address=:443
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The HTTPS port
+      - "443:443"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  tomcat:
+    image: tomcat:9.0.64
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tomcat-https.rule=Host(`trxn.tomcat.cn.localhost`)"
+      - "traefik.http.routers.tomcat-https.tls=true"
+      - "traefik.http.routers.tomcat-https.tls.certresolver=myresolver"
+      - "traefik.http.routers.tomcat-https.service=tomcat"
+
+      - "traefik.http.routers.tomcat-http.rule=Host(`trxn.tomcat.cn`)"
+      - "traefik.http.routers.tomcat-http.service=tomcat"
+
+      - "traefik.http.routers.tomcat-https.entrypoints=websecure"
+      - "traefik.http.routers.tomcat-http.entrypoints=web"
+
+      - "traefik.http.services.tomcat.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.redirect-http-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-http-to-https.redirectscheme.permanent=true"
+      - "traefik.http.routers.tomcat-http.middlewares=redirect-http-to-https"

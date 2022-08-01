@@ -1,0 +1,509 @@
+apiVersion: v1
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      external-dns.alpha.kubernetes.io/hostname: mgr.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      kubernetes.io/tls-acme: "true"
+      meta.helm.sh/release-name: dbmgr
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    creationTimestamp: "2021-07-15T16:52:31Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: XXXXX
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: mgr
+      environment: preproduction
+      helm.sh/chart: mgr-1.4.0
+      method: traefik
+      visibility: internal
+    name: dbmgr-mgr
+    namespace: mycompany-uat
+    resourceVersion: "91095703"
+    uid: b251ed66-7508-4286-aa5e-28a1d3dfcfc4
+  spec:
+    ingressClassName: internal-ingress-traefik
+    rules:
+    - host: mgr.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: dbmgr-mgr
+              port:
+                name: http
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - mgr.uat.mycompany.com
+      secretName: chart-mgr-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXe-bXXXXXXXXXXXXXXe.elb.us-east-1.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      external-dns.alpha.kubernetes.io/hostname: app_e.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      kubernetes.io/tls-acme: "true"
+      meta.helm.sh/release-name: app_e
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2022-01-20T20:49:47Z"
+    generation: 2
+    labels:
+      app.kubernetes.io/instance: app_e
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: app_e-component_d
+      app.kubernetes.io/version: 2.3.0
+      environment: uat
+      helm.sh/chart: component_d-1.1.0
+      method: traefik
+      tls: aws
+      visibility: public
+    name: app_e-component_d
+    namespace: mycompany-uat
+    resourceVersion: "97207026"
+    uid: 6e6b0c36-2182-4c11-b8d4-20528539a88e
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: app_e.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: app_e-component_d
+              port:
+                number: 3000
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - app_e.uat.mycompany.com
+      secretName: component_d-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXX17-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: app_a-bot.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      meta.helm.sh/release-name: mycompany-app_a
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2021-10-28T20:51:53Z"
+    generation: 3
+    labels:
+      app.kubernetes.io/instance: mycompany-app_a
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: mycompany-app_a
+      app.kubernetes.io/version: 0.0.1
+      environment: uat
+      helm.sh/chart: teams-suite-0.2.4
+      method: traefik
+      tls: aws
+      visibility: public
+    name: mycompany-app_a-bot
+    namespace: mycompany-uat
+    resourceVersion: "53179125"
+    uid: 1f0f268b-a6c2-4114-b09a-91d7210dc87f
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: app_a-bot.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: mycompany-app_a-bot
+              port:
+                number: 3011
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: app_a-connector.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      meta.helm.sh/release-name: mycompany-app_a
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2021-10-27T14:04:01Z"
+    generation: 3
+    labels:
+      app.kubernetes.io/instance: mycompany-app_a
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: mycompany-app_a
+      app.kubernetes.io/version: 0.0.1
+      environment: uat
+      helm.sh/chart: teams-suite-0.2.4
+      method: traefik
+      tls: aws
+      visibility: public
+    name: mycompany-app_a-connector
+    namespace: mycompany-uat
+    resourceVersion: "53179129"
+    uid: 0d811951-c83e-488d-9880-6ec2f46a098c
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: app_a-connector.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: mycompany-app_a-connector
+              port:
+                number: 3012
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: app_a-core.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      meta.helm.sh/release-name: mycompany-app_a
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2021-11-11T21:09:31Z"
+    generation: 3
+    labels:
+      app.kubernetes.io/instance: mycompany-app_a
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: mycompany-app_a
+      app.kubernetes.io/version: 0.0.1
+      environment: uat
+      helm.sh/chart: teams-suite-0.2.4
+      method: traefik
+      tls: aws
+      visibility: public
+    name: mycompany-app_a-core
+    namespace: mycompany-uat
+    resourceVersion: "53179133"
+    uid: d201069a-ede5-4437-aafe-2b5f1fb1b681
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: app_a-core.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: mycompany-app_a-core
+              port:
+                number: 3010
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: app_a-helpdesk.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      meta.helm.sh/release-name: mycompany-app_a
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2021-10-28T20:51:53Z"
+    generation: 3
+    labels:
+      app.kubernetes.io/instance: mycompany-app_a
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: mycompany-app_a
+      app.kubernetes.io/version: 0.0.1
+      environment: uat
+      helm.sh/chart: teams-suite-0.2.4
+      method: traefik
+      tls: aws
+      visibility: public
+    name: mycompany-app_a-helpdesk
+    namespace: mycompany-uat
+    resourceVersion: "53179136"
+    uid: 4961510b-dfa1-4899-bc37-4c2429e8547b
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: app_a-helpdesk.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: mycompany-app_a-helpdesk
+              port:
+                number: 3014
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: app_a-jira.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      meta.helm.sh/release-name: mycompany-app_a
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2021-10-29T12:32:08Z"
+    generation: 4
+    labels:
+      app.kubernetes.io/instance: mycompany-app_a
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: mycompany-app_a
+      app.kubernetes.io/version: 0.0.1
+      environment: uat
+      helm.sh/chart: teams-suite-0.2.4
+      method: traefik
+      tls: aws
+      visibility: public
+    name: mycompany-app_a-component_d
+    namespace: mycompany-uat
+    resourceVersion: "53179140"
+    uid: 5dd37d77-6be6-449f-8b83-d715410ff8eb
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: app_a-jira.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: mycompany-app_a-component_d
+              port:
+                number: 3015
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: app_a-tabs.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      meta.helm.sh/release-name: mycompany-app_a
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2021-10-27T14:04:01Z"
+    generation: 3
+    labels:
+      app.kubernetes.io/instance: mycompany-app_a
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: mycompany-app_a
+      app.kubernetes.io/version: 0.0.1
+      environment: uat
+      helm.sh/chart: teams-suite-0.2.4
+      method: traefik
+      tls: aws
+      visibility: public
+    name: mycompany-app_a-tabs
+    namespace: mycompany-uat
+    resourceVersion: "53179142"
+    uid: 0b8e405c-fad6-49f0-b69d-228d262085f0
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: app_a-tabs.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: mycompany-app_a-tabs
+              port:
+                number: 3013
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      external-dns.alpha.kubernetes.io/hostname: mstjold.mycompany.ai
+      external-dns/domain: mycompany.ai
+      kubernetes.io/tls-acme: "true"
+      meta.helm.sh/release-name: mycompany-app_a-temporary-component_d
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2022-02-16T16:56:00Z"
+    generation: 3
+    labels:
+      app.kubernetes.io/instance: mycompany-app_a-temporary-component_d
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: nginx
+      environment: preproduction
+      helm.sh/chart: nginx-9.7.6
+      method: traefik
+      tls: acme
+      visibility: public
+    name: mycompany-app_a-temporary-component_d-nginx
+    namespace: mycompany-uat
+    resourceVersion: "105028364"
+    uid: dc08e92a-337c-4c63-84ec-b7c79141c16c
+  spec:
+    ingressClassName: public-ingress-acme-traefik
+    rules:
+    - host: mstjold.mycompany.ai
+      http:
+        paths:
+        - backend:
+            service:
+              name: mycompany-app_a-temporary-component_d-nginx
+              port:
+                name: http
+          path: /
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - mstjold.mycompany.ai
+      secretName: mstjold.mycompany.ai-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXc-8XXXXXXXXXXXXXXa.elb.us-east-1.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: pd.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      meta.helm.sh/release-name: app_c
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2021-12-15T20:22:48Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: app_c
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: app_c-component_c
+      app.kubernetes.io/version: 0.2.0
+      environment: uat
+      helm.sh/chart: component_c-1.0.0
+      method: traefik
+      tls: aws
+      visibility: public
+    name: app_c-component_c
+    namespace: mycompany-uat
+    resourceVersion: "68037979"
+    uid: e71b26d8-b61f-4d52-8d82-4145133dd33c
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: pd.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: app_c-component_c
+              port:
+                number: 3300
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - pd.uat.mycompany.com
+      secretName: myapp-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: account.uat.mycompany.com
+      external-dns/domain: uat.mycompany.com
+      meta.helm.sh/release-name: app_b
+      meta.helm.sh/release-namespace: mycompany-uat
+      traefik.ingress.kubernetes.io/preserve-host: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    creationTimestamp: "2021-11-13T15:33:50Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: app_b
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: app_b
+      app.kubernetes.io/version: "5.9"
+      environment: uat
+      helm.sh/chart: app_b-1.9.0
+      method: traefik
+      tls: aws
+      visibility: public
+    name: app_b
+    namespace: mycompany-uat
+    resourceVersion: "104009999"
+    uid: 63856992-0aea-4c7e-a04f-c1e762f4cb22
+  spec:
+    ingressClassName: public-ingress-aws-traefik
+    rules:
+    - host: account.uat.mycompany.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: app_b
+              port:
+                number: 8000
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: aXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX7-1XXXXXXXX6.us-east-1.elb.amazonaws.com
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

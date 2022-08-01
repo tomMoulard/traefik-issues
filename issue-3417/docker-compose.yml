@@ -1,0 +1,28 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik/traefik:8012-fixed
+    # image: traefik/traefik:8012-raw
+    # image: traefik:2.4
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  whoami:
+    # image: traefik/whoamitcp
+    image: "tommoulard/app"
+    build: .
+    ports:
+      - "8000:80"
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.services.whoami.loadbalancer.healthcheck.hostname=localhost:8000"
+      - "traefik.http.services.whoami.loadbalancer.healthcheck.path=/not/404"
+

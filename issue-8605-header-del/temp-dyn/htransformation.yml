@@ -1,0 +1,13 @@
+http:
+    middlewares:
+        my-htransformation:
+            plugin:
+                htransformation:
+                    Rules:
+                        - Header: NewHeader
+                          Name: Header addition
+                          Type: Set
+                          Value: "True"
+                        - Header: Date
+                          Name: Header deletion
+                          Type: Del

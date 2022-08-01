@@ -1,0 +1,14 @@
+http:
+  routers:
+    router-minio:
+      rule: "HostRegexp(`{any:.*}`)"
+      entryPoints:
+        - minio
+      service: minio
+
+  services:
+    minio:
+      loadBalancer:
+        servers:
+          - url: "https://minio1:9000"
+          - url: "https://minio2:9000"

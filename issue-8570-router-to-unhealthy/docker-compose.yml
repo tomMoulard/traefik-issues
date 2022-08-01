@@ -1,0 +1,34 @@
+version: '3.6'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:2.5
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+  blue:
+    image: traefik/whoami # https://github.com/traefik/whoami
+    environment:
+      WHOAMI_NAME: blue
+    labels:
+      traefik.http.routers.blue.rule: HostRegexp(`{var:.*}`) || Host(`blue.localhost`)
+      traefik.http.routers.blue.priority: 2 # blue > green
+      traefik.http.services.blue.loadbalancer.healthcheck.path: /health
+      traefik.http.services.blue.loadbalancer.healthcheck.interval: 1s
+  green:
+    image: traefik/whoami # https://github.com/traefik/whoami
+    environment:
+      WHOAMI_NAME: green
+    labels:
+      traefik.http.routers.green.rule: HostRegexp(`{var:.*}`) || Host(`green.localhost`)
+      traefik.http.routers.green.priority: 1 # blue > green
+      traefik.http.services.green.loadbalancer.healthcheck.path: /health
+      traefik.http.services.green.loadbalancer.healthcheck.interval: 1s

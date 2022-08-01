@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-ingress-controller
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: traefik-external
+  labels:
+    app: traefik
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik-external
+  template:
+    metadata:
+      labels:
+        app: traefik-external
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - name: traefik
+          image: traefik:2.4.5
+          imagePullPolicy: IfNotPresent
+          args:
+            - --log.level=DEBUG
+            - --api
+            - --api.insecure
+            - --entrypoints.web.address=:80
+            - --providers.kubernetesingress
+            # - --providers.kubernetescrd.ingressclass=traefik-external
+            - --providers.kubernetesingress.ingressclass=traefik-external
+            - --pilot.token=a3099e99-2aa3-4100-b2b0-ef2ebb92b079
+          ports:
+            - name: web
+              containerPort: 80
+            - name: admin
+              containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+spec:
+  type: LoadBalancer
+  selector:
+    app: traefik-external
+  ports:
+    - protocol: TCP
+      port: 80
+      name: web
+#      targetPort: 80
+    - protocol: TCP
+      port: 8080
+      name: admin
+#      targetPort: 8080

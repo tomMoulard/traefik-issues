@@ -1,0 +1,16 @@
+{
+    "service": {
+        "id": "connect",
+        "name": "uuid-api",
+        "tags": [
+            "traefik.enable=true",
+            "traefik.connect=true",
+            "traefik.http.routers.router1.rule=Host(`localhost`)"
+        ],
+        "address": "connect",
+        "port": 443,
+        "connect": {
+            "native": true
+        }
+    }
+}

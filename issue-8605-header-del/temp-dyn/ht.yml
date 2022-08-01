@@ -1,0 +1,6 @@
+http:
+  middlewares:
+    my-ht:
+      plugin:
+        ht:
+          Toto: tata

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package whoami;
+
+option go_package = "github.com/tommoulard/whoamigrpc";
+
+// The greeting service definition.
+service Whoami {
+    // Sends a greeting
+    rpc AskWhoAmI (WhoAmIRequest) returns (WhoAmIReply) {}
+}
+
+// The request message containing the user's name.
+message WhoAmIRequest {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message WhoAmIReply {
+    string message = 1;
+}

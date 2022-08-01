@@ -1,0 +1,29 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.5
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.fudp.address=:8001/udp'
+    ports:
+      - "80:80"
+      - "8000:8000/udp"
+      - "8001:8001/udp"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+  tintin:
+    image: tommoulard/whoamiudp
+    command: |
+      -name tintin
+    labels:
+      - "traefik.udp.routers.tintin.service=tintin"
+      - "traefik.udp.routers.tintin.entrypoints=fudp"
+      - "traefik.udp.services.tintin.loadbalancer.server.port=8080"
+

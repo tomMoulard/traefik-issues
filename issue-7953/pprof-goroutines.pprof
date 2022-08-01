@@ -1,0 +1,333 @@
+goroutine profile: total 783
+189 @ 0x43dac5 0x44dc6f 0x7446f2 0x7457bf 0x7450e9 0x5c9b3b 0x5c9dfc 0x746b48 0x746976 0x2b11297 0x2b50ad1 0xb115f0 0xb112af 0xb10e05 0xb0fbe5 0x2b509ee 0x2ac1cad 0x2ad4572 0x2b4b73a 0x2b5078d 0x2ad6f46 0x2b119ec 0x2b0b7c2 0x2b118ba 0x2b10df2 0x2ad740c 0x2ac1cad 0x7c6b26 0x2b23187 0x2ac1cad 0x18d7109 0x18d76a7
+#	0x7446f1	net/http.(*http2serverConn).writeHeaders+0x171								/usr/local/go/src/net/http/h2_bundle.go:5753
+#	0x7457be	net/http.(*http2responseWriterState).writeChunk+0x3be							/usr/local/go/src/net/http/h2_bundle.go:6020
+#	0x7450e8	net/http.http2chunkWriter.Write+0x48									/usr/local/go/src/net/http/h2_bundle.go:5933
+#	0x5c9b3a	bufio.(*Writer).Flush+0x7a										/usr/local/go/src/bufio/bufio.go:607
+#	0x5c9dfb	bufio.(*Writer).Write+0xfb										/usr/local/go/src/bufio/bufio.go:643
+#	0x746b47	net/http.(*http2responseWriter).write+0xe7								/usr/local/go/src/net/http/h2_bundle.go:6259
+#	0x746975	net/http.(*http2responseWriter).Write+0x55								/usr/local/go/src/net/http/h2_bundle.go:6233
+#	0x2b11296	github.com/traefik/traefik/v2/pkg/middlewares/headers.(*responseModifier).Write+0x96			/go/src/github.com/traefik/traefik/pkg/middlewares/headers/responsewriter.go:77
+#	0x2b50ad0	github.com/traefik/traefik/v2/pkg/middlewares/pipelining.(*writerWithoutCloseNotify).Write+0x50		/go/src/github.com/traefik/traefik/pkg/middlewares/pipelining/pipelining.go:52
+#	0xb115ef	net/http/httputil.(*maxLatencyWriter).Write+0xaf							/usr/local/go/src/net/http/httputil/reverseproxy.go:497
+#	0xb112ae	net/http/httputil.(*ReverseProxy).copyBuffer+0x1ce							/usr/local/go/src/net/http/httputil/reverseproxy.go:452
+#	0xb10e04	net/http/httputil.(*ReverseProxy).copyResponse+0xe4							/usr/local/go/src/net/http/httputil/reverseproxy.go:435
+#	0xb0fbe4	net/http/httputil.(*ReverseProxy).ServeHTTP+0x844							/usr/local/go/src/net/http/httputil/reverseproxy.go:328
+#	0x2b509ed	github.com/traefik/traefik/v2/pkg/middlewares/pipelining.(*pipelining).ServeHTTP+0xed			/go/src/github.com/traefik/traefik/pkg/middlewares/pipelining/pipelining.go:36
+#	0x2ac1cac	github.com/traefik/traefik/v2/pkg/middlewares/accesslog.(*FieldHandler).ServeHTTP+0x18c			/go/src/github.com/traefik/traefik/pkg/middlewares/accesslog/field_middleware.go:29
+#	0x2ad4571	github.com/traefik/traefik/v2/pkg/middlewares/metrics.(*metricsMiddleware).ServeHTTP+0x5b1		/go/src/github.com/traefik/traefik/pkg/middlewares/metrics/metrics.go:101
+#	0x2b4b739	github.com/vulcand/oxy/roundrobin.(*RoundRobin).ServeHTTP+0x159						/go/pkg/mod/github.com/vulcand/oxy@v1.1.0/roundrobin/rr.go:147
+#	0x2b5078c	github.com/traefik/traefik/v2/pkg/middlewares/emptybackendhandler.(*emptyBackend).ServeHTTP+0x16c	/go/src/github.com/traefik/traefik/pkg/middlewares/emptybackendhandler/empty_backend_handler.go:31
+#	0x2ad6f45	github.com/traefik/traefik/v2/pkg/middlewares/tracing.(*forwarderMiddleware).ServeHTTP+0x605		/go/src/github.com/traefik/traefik/pkg/middlewares/tracing/forwarder.go:38
+#	0x2b119eb	github.com/traefik/traefik/v2/pkg/middlewares/headers.secureHeader.ServeHTTP.func1+0xeb			/go/src/github.com/traefik/traefik/pkg/middlewares/headers/secure.go:52
+#	0x2b0b7c1	github.com/unrolled/secure.(*Secure).HandlerFuncWithNextForRequestOnly+0x201				/go/pkg/mod/github.com/unrolled/secure@v1.0.7/secure.go:228
+#	0x2b118b9	github.com/traefik/traefik/v2/pkg/middlewares/headers.secureHeader.ServeHTTP+0x79			/go/src/github.com/traefik/traefik/pkg/middlewares/headers/secure.go:51
+#	0x2b10df1	github.com/traefik/traefik/v2/pkg/middlewares/headers.(*headers).ServeHTTP+0x51				/go/src/github.com/traefik/traefik/pkg/middlewares/headers/headers.go:79
+#	0x2ad740b	github.com/traefik/traefik/v2/pkg/middlewares/tracing.(*Wrapper).ServeHTTP+0x16b			/go/src/github.com/traefik/traefik/pkg/middlewares/tracing/wrapper.go:57
+#	0x2ac1cac	github.com/traefik/traefik/v2/pkg/middlewares/accesslog.(*FieldHandler).ServeHTTP+0x18c			/go/src/github.com/traefik/traefik/pkg/middlewares/accesslog/field_middleware.go:29
+#	0x7c6b25	github.com/gorilla/mux.(*Router).ServeHTTP+0x105							/go/pkg/mod/github.com/containous/mux@v0.0.0-20181024131434-c33f32e26898/mux.go:133
+#	0x2b23186	github.com/traefik/traefik/v2/pkg/middlewares/recovery.(*recovery).ServeHTTP+0x86			/go/src/github.com/traefik/traefik/pkg/middlewares/recovery/recovery.go:32
+#	0x2ac1cac	github.com/traefik/traefik/v2/pkg/middlewares/accesslog.(*FieldHandler).ServeHTTP+0x18c			/go/src/github.com/traefik/traefik/pkg/middlewares/accesslog/field_middleware.go:29
+#	0x18d7108	github.com/traefik/traefik/v2/pkg/middlewares/requestdecorator.(*RequestDecorator).ServeHTTP+0x388	/go/src/github.com/traefik/traefik/pkg/middlewares/requestdecorator/request_decorator.go:47
+#	0x18d76a6	github.com/traefik/traefik/v2/pkg/middlewares/requestdecorator.WrapHandler.func1.1+0x86			/go/src/github.com/traefik/traefik/pkg/middlewares/requestdecorator/request_decorator.go:84
+
+189 @ 0x43dac5 0x44e625 0x44e60e 0x470607 0x498465 0xb11848 0xb117af 0x474b81
+#	0x470606	sync.runtime_SemacquireMutex+0x46			/usr/local/go/src/runtime/sema.go:71
+#	0x498464	sync.(*Mutex).lockSlow+0x104				/usr/local/go/src/sync/mutex.go:138
+#	0xb11847	sync.(*Mutex).Lock+0xc7					/usr/local/go/src/sync/mutex.go:81
+#	0xb117ae	net/http/httputil.(*maxLatencyWriter).delayedFlush+0x2e	/usr/local/go/src/net/http/httputil/reverseproxy.go:515
+
+86 @ 0x43dac5 0x44dc6f 0x78ba1c 0x474b81
+#	0x78ba1b	net/http.(*persistConn).writeLoop+0x11b	/usr/local/go/src/net/http/transport.go:2340
+
+61 @ 0x43dac5 0x44dc6f 0x7446f2 0x7457bf 0x7450e9 0x5c9b3b 0x7462e5 0x746cc5 0x790a16 0x744497 0x474b81
+#	0x7446f1	net/http.(*http2serverConn).writeHeaders+0x171		/usr/local/go/src/net/http/h2_bundle.go:5753
+#	0x7457be	net/http.(*http2responseWriterState).writeChunk+0x3be	/usr/local/go/src/net/http/h2_bundle.go:6020
+#	0x7450e8	net/http.http2chunkWriter.Write+0x48			/usr/local/go/src/net/http/h2_bundle.go:5933
+#	0x5c9b3a	bufio.(*Writer).Flush+0x7a				/usr/local/go/src/bufio/bufio.go:607
+#	0x7462e4	net/http.(*http2responseWriter).Flush+0x44		/usr/local/go/src/net/http/h2_bundle.go:6133
+#	0x746cc4	net/http.(*http2responseWriter).handlerDone+0x44	/usr/local/go/src/net/http/h2_bundle.go:6269
+#	0x790a15	net/http.(*http2serverConn).runHandler.func1+0x2b5	/usr/local/go/src/net/http/h2_bundle.go:5717
+#	0x744496	net/http.(*http2serverConn).runHandler+0xb6		/usr/local/go/src/net/http/h2_bundle.go:5721
+
+52 @ 0x43dac5 0x435d5b 0x46e4b5 0x4f8405 0x4f9445 0x4f9423 0x6153ef 0x62c3ee 0x789117 0x5c7825 0x5c798f 0x789dc8 0x474b81
+#	0x46e4b4	internal/poll.runtime_pollWait+0x54		/usr/local/go/src/runtime/netpoll.go:222
+#	0x4f8404	internal/poll.(*pollDesc).wait+0x44		/usr/local/go/src/internal/poll/fd_poll_runtime.go:87
+#	0x4f9444	internal/poll.(*pollDesc).waitRead+0x1a4	/usr/local/go/src/internal/poll/fd_poll_runtime.go:92
+#	0x4f9422	internal/poll.(*FD).Read+0x182			/usr/local/go/src/internal/poll/fd_unix.go:159
+#	0x6153ee	net.(*netFD).Read+0x4e				/usr/local/go/src/net/fd_posix.go:55
+#	0x62c3ed	net.(*conn).Read+0x8d				/usr/local/go/src/net/net.go:182
+#	0x789116	net/http.(*persistConn).Read+0x76		/usr/local/go/src/net/http/transport.go:1887
+#	0x5c7824	bufio.(*Reader).fill+0x104			/usr/local/go/src/bufio/bufio.go:101
+#	0x5c798e	bufio.(*Reader).Peek+0x4e			/usr/local/go/src/bufio/bufio.go:139
+#	0x789dc7	net/http.(*persistConn).readLoop+0x1a7		/usr/local/go/src/net/http/transport.go:2040
+
+34 @ 0x43dac5 0x44dc6f 0x78a5ec 0x474b81
+#	0x78a5eb	net/http.(*persistConn).readLoop+0x9cb	/usr/local/go/src/net/http/transport.go:2161
+
+16 @ 0x43dac5 0x40690f 0x40654b 0x25926b3 0x1e38b0e 0x1e38bd1 0x474b81
+#	0x25926b2	k8s.io/client-go/tools/cache.(*sharedProcessor).run+0x52		/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/shared_informer.go:628
+#	0x1e38b0d	k8s.io/apimachinery/pkg/util/wait.(*Group).StartWithChannel.func1+0x2d	/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:56
+#	0x1e38bd0	k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1+0x50		/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:73
+
+16 @ 0x43dac5 0x40690f 0x40654b 0x2596f34 0x474b81
+#	0x2596f33	k8s.io/client-go/tools/cache.(*controller).Run.func1+0x33	/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/controller.go:127
+
+16 @ 0x43dac5 0x40690f 0x40658b 0x2598d5d 0x1e38c7f 0x1e37c0d 0x1e37b38 0x2593195 0x2593140 0x1e38bd1 0x474b81
+#	0x2598d5c	k8s.io/client-go/tools/cache.(*processorListener).run.func1+0x5c	/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/shared_informer.go:772
+#	0x1e38c7e	k8s.io/apimachinery/pkg/util/wait.BackoffUntil.func1+0x5e		/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:155
+#	0x1e37c0c	k8s.io/apimachinery/pkg/util/wait.BackoffUntil+0xac			/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:156
+#	0x1e37b37	k8s.io/apimachinery/pkg/util/wait.JitterUntil+0x97			/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:133
+#	0x2593194	k8s.io/apimachinery/pkg/util/wait.Until+0x94				/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:90
+#	0x259313f	k8s.io/client-go/tools/cache.(*processorListener).run+0x3f		/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/shared_informer.go:771
+#	0x1e38bd0	k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1+0x50		/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:73
+
+16 @ 0x43dac5 0x44dc6f 0x258e525 0x258dcd7 0x2597218 0x1e38c7f 0x1e37c0d 0x258d356 0x1e38b0e 0x1e38bd1 0x474b81
+#	0x258e524	k8s.io/client-go/tools/cache.(*Reflector).watchHandler+0x1a4		/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/reflector.go:451
+#	0x258dcd6	k8s.io/client-go/tools/cache.(*Reflector).ListAndWatch+0x656		/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/reflector.go:415
+#	0x2597217	k8s.io/client-go/tools/cache.(*Reflector).Run.func1+0x37		/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/reflector.go:209
+#	0x1e38c7e	k8s.io/apimachinery/pkg/util/wait.BackoffUntil.func1+0x5e		/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:155
+#	0x1e37c0c	k8s.io/apimachinery/pkg/util/wait.BackoffUntil+0xac			/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:156
+#	0x258d355	k8s.io/client-go/tools/cache.(*Reflector).Run+0x195			/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/reflector.go:208
+#	0x1e38b0d	k8s.io/apimachinery/pkg/util/wait.(*Group).StartWithChannel.func1+0x2d	/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:56
+#	0x1e38bd0	k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1+0x50		/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:73
+
+16 @ 0x43dac5 0x44dc6f 0x2592f37 0x1e38bd1 0x474b81
+#	0x2592f36	k8s.io/client-go/tools/cache.(*processorListener).pop+0x156	/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/shared_informer.go:742
+#	0x1e38bd0	k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1+0x50	/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:73
+
+16 @ 0x43dac5 0x44dc6f 0x259856f 0x474b81
+#	0x259856e	k8s.io/client-go/tools/cache.(*Reflector).ListAndWatch.func2+0x16e	/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/reflector.go:361
+
+16 @ 0x43dac5 0x470798 0x47076e 0x49639d 0x1371eb7 0x138ca6f 0x551b4b 0x5518bf 0x551379 0x1e1a848 0x1e4a9e9 0x1e4af4e 0x1d97d87 0x474b81
+#	0x47076d	sync.runtime_notifyListWait+0xcd						/usr/local/go/src/runtime/sema.go:513
+#	0x49639c	sync.(*Cond).Wait+0x9c								/usr/local/go/src/sync/cond.go:56
+#	0x1371eb6	golang.org/x/net/http2.(*pipe).Read+0x96					/go/pkg/mod/golang.org/x/net@v0.0.0-20200904194848-62affa334b73/http2/pipe.go:65
+#	0x138ca6e	golang.org/x/net/http2.transportResponseBody.Read+0xae				/go/pkg/mod/golang.org/x/net@v0.0.0-20200904194848-62affa334b73/http2/transport.go:2083
+#	0x551b4a	encoding/json.(*Decoder).refill+0xea						/usr/local/go/src/encoding/json/stream.go:165
+#	0x5518be	encoding/json.(*Decoder).readValue+0x1fe					/usr/local/go/src/encoding/json/stream.go:140
+#	0x551378	encoding/json.(*Decoder).Decode+0x78						/usr/local/go/src/encoding/json/stream.go:63
+#	0x1e1a847	k8s.io/apimachinery/pkg/util/framer.(*jsonFrameReader).Read+0x1a7		/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/framer/framer.go:150
+#	0x1e4a9e8	k8s.io/apimachinery/pkg/runtime/serializer/streaming.(*decoder).Decode+0x88	/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/runtime/serializer/streaming/streaming.go:77
+#	0x1e4af4d	k8s.io/client-go/rest/watch.(*Decoder).Decode+0x6d				/go/pkg/mod/k8s.io/client-go@v0.19.2/rest/watch/decoder.go:49
+#	0x1d97d86	k8s.io/apimachinery/pkg/watch.(*StreamWatcher).receive+0x146			/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/watch/streamwatcher.go:104
+
+16 @ 0x43dac5 0x470798 0x47076e 0x49639d 0x2588e98 0x2586e22 0x1e38c7f 0x1e37c0d 0x1e37b38 0x2586b8e 0x2586b30 0x2590a2a 0x474b81
+#	0x47076d	sync.runtime_notifyListWait+0xcd				/usr/local/go/src/runtime/sema.go:513
+#	0x49639c	sync.(*Cond).Wait+0x9c						/usr/local/go/src/sync/cond.go:56
+#	0x2588e97	k8s.io/client-go/tools/cache.(*DeltaFIFO).Pop+0x97		/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/delta_fifo.go:488
+#	0x2586e21	k8s.io/client-go/tools/cache.(*controller).processLoop+0x41	/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/controller.go:179
+#	0x1e38c7e	k8s.io/apimachinery/pkg/util/wait.BackoffUntil.func1+0x5e	/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:155
+#	0x1e37c0c	k8s.io/apimachinery/pkg/util/wait.BackoffUntil+0xac		/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:156
+#	0x1e37b37	k8s.io/apimachinery/pkg/util/wait.JitterUntil+0x97		/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:133
+#	0x2586b8d	k8s.io/apimachinery/pkg/util/wait.Until+0x2cd			/go/pkg/mod/k8s.io/apimachinery@v0.19.2/pkg/util/wait/wait.go:90
+#	0x2586b2f	k8s.io/client-go/tools/cache.(*controller).Run+0x26f		/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/controller.go:150
+#	0x2590a29	k8s.io/client-go/tools/cache.(*sharedIndexInformer).Run+0x429	/go/pkg/mod/k8s.io/client-go@v0.19.2/tools/cache/shared_informer.go:410
+
+6 @ 0x43dac5 0x44dc6f 0x2b6544f 0x772066 0x2b6aac5 0x474b81
+#	0x2b6544e	github.com/traefik/traefik/v2/pkg/server.(*httpForwarder).Accept+0xce	/go/src/github.com/traefik/traefik/pkg/server/server_entrypoint_tcp.go:51
+#	0x772065	net/http.(*Server).Serve+0x265						/usr/local/go/src/net/http/server.go:2937
+#	0x2b6aac4	github.com/traefik/traefik/v2/pkg/server.createHTTPServer.func1+0x44	/go/src/github.com/traefik/traefik/pkg/server/server_entrypoint_tcp.go:506
+
+3 @ 0x43dac5 0x44dc6f 0x2acf990 0x474b81
+#	0x2acf98f	github.com/eapache/channels.(*RingChannel).ringBuffer+0x20f	/go/pkg/mod/github.com/eapache/channels@v1.1.0/ring_channel.go:87
+
+3 @ 0x43dac5 0x44dc6f 0x2b63bdc 0x2b69879 0xd9ce64 0xd9cf6f 0x474b81
+#	0x2b63bdb	github.com/traefik/traefik/v2/pkg/server.(*ConfigurationWatcher).throttleProviderConfigReload+0x1bb	/go/src/github.com/traefik/traefik/pkg/server/configurationwatcher.go:224
+#	0x2b69878	github.com/traefik/traefik/v2/pkg/server.(*ConfigurationWatcher).preLoadConfiguration.func1+0x58	/go/src/github.com/traefik/traefik/pkg/server/configurationwatcher.go:193
+#	0xd9ce63	github.com/traefik/traefik/v2/pkg/safe.(*Pool).GoCtx.func1+0x63						/go/src/github.com/traefik/traefik/pkg/safe/routine.go:36
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e						/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+3 @ 0x43dac5 0x44dc6f 0x2b6998e 0xd9ce64 0xd9cf6f 0x474b81
+#	0x2b6998d	github.com/traefik/traefik/v2/pkg/server.(*ConfigurationWatcher).throttleProviderConfigReload.func1+0xed	/go/src/github.com/traefik/traefik/pkg/server/configurationwatcher.go:210
+#	0xd9ce63	github.com/traefik/traefik/v2/pkg/safe.(*Pool).GoCtx.func1+0x63							/go/src/github.com/traefik/traefik/pkg/safe/routine.go:36
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e							/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+3 @ 0x43dac5 0x44dc6f 0xda783a 0x474b81
+#	0xda7839	github.com/patrickmn/go-cache.(*janitor).Run+0xd9	/go/pkg/mod/github.com/patrickmn/go-cache@v2.1.0+incompatible/cache.go:1079
+
+2 @ 0x43dac5 0x435d5b 0x46e4b5 0x4f8405 0x4f9445 0x4f9423 0x6153ef 0x62c3ee 0x5c7ea2 0x2b26f06 0x2b2e2ca 0x695282 0x533651 0x6954d3 0x6922f5 0x6985bf 0x6985ca 0x4cf9a7 0x730429 0x7303da 0x730ca5 0x73bd69 0x474b81
+#	0x46e4b4	internal/poll.runtime_pollWait+0x54				/usr/local/go/src/runtime/netpoll.go:222
+#	0x4f8404	internal/poll.(*pollDesc).wait+0x44				/usr/local/go/src/internal/poll/fd_poll_runtime.go:87
+#	0x4f9444	internal/poll.(*pollDesc).waitRead+0x1a4			/usr/local/go/src/internal/poll/fd_poll_runtime.go:92
+#	0x4f9422	internal/poll.(*FD).Read+0x182					/usr/local/go/src/internal/poll/fd_unix.go:159
+#	0x6153ee	net.(*netFD).Read+0x4e						/usr/local/go/src/net/fd_posix.go:55
+#	0x62c3ed	net.(*conn).Read+0x8d						/usr/local/go/src/net/net.go:182
+#	0x5c7ea1	bufio.(*Reader).Read+0x221					/usr/local/go/src/bufio/bufio.go:227
+#	0x2b26f05	github.com/pires/go-proxyproto.(*Conn).Read+0xa5		/go/pkg/mod/github.com/pires/go-proxyproto@v0.3.1/protocol.go:107
+#	0x2b2e2c9	github.com/traefik/traefik/v2/pkg/tcp.(*Conn).Read+0x129	/go/src/github.com/traefik/traefik/pkg/tcp/router.go:192
+#	0x695281	crypto/tls.(*atLeastReader).Read+0x61				/usr/local/go/src/crypto/tls/conn.go:779
+#	0x533650	bytes.(*Buffer).ReadFrom+0xb0					/usr/local/go/src/bytes/buffer.go:204
+#	0x6954d2	crypto/tls.(*Conn).readFromUntil+0xf2				/usr/local/go/src/crypto/tls/conn.go:801
+#	0x6922f4	crypto/tls.(*Conn).readRecordOrCCS+0x114			/usr/local/go/src/crypto/tls/conn.go:608
+#	0x6985be	crypto/tls.(*Conn).readRecord+0x15e				/usr/local/go/src/crypto/tls/conn.go:576
+#	0x6985c9	crypto/tls.(*Conn).Read+0x169					/usr/local/go/src/crypto/tls/conn.go:1252
+#	0x4cf9a6	io.ReadAtLeast+0x86						/usr/local/go/src/io/io.go:314
+#	0x730428	io.ReadFull+0x88						/usr/local/go/src/io/io.go:333
+#	0x7303d9	net/http.http2readFrameHeader+0x39				/usr/local/go/src/net/http/h2_bundle.go:1477
+#	0x730ca4	net/http.(*http2Framer).ReadFrame+0xa4				/usr/local/go/src/net/http/h2_bundle.go:1735
+#	0x73bd68	net/http.(*http2serverConn).readFrames+0xa8			/usr/local/go/src/net/http/h2_bundle.go:4314
+
+2 @ 0x43dac5 0x435d5b 0x46e4b5 0x4f8405 0x4faffc 0x4fafde 0x616965 0x6394d2 0x637ce5 0x2b6700f 0x2b26957 0x2b663be 0x474b81
+#	0x46e4b4	internal/poll.runtime_pollWait+0x54						/usr/local/go/src/runtime/netpoll.go:222
+#	0x4f8404	internal/poll.(*pollDesc).wait+0x44						/usr/local/go/src/internal/poll/fd_poll_runtime.go:87
+#	0x4faffb	internal/poll.(*pollDesc).waitRead+0x1fb					/usr/local/go/src/internal/poll/fd_poll_runtime.go:92
+#	0x4fafdd	internal/poll.(*FD).Accept+0x1dd						/usr/local/go/src/internal/poll/fd_unix.go:394
+#	0x616964	net.(*netFD).accept+0x44							/usr/local/go/src/net/fd_unix.go:172
+#	0x6394d1	net.(*TCPListener).accept+0x31							/usr/local/go/src/net/tcpsock_posix.go:139
+#	0x637ce4	net.(*TCPListener).AcceptTCP+0x64						/usr/local/go/src/net/tcpsock.go:248
+#	0x2b6700e	github.com/traefik/traefik/v2/pkg/server.tcpKeepAliveListener.Accept+0x2e	/go/src/github.com/traefik/traefik/pkg/server/server_entrypoint_tcp.go:339
+#	0x2b26956	github.com/pires/go-proxyproto.(*Listener).Accept+0x36				/go/pkg/mod/github.com/pires/go-proxyproto@v0.3.1/protocol.go:49
+#	0x2b663bd	github.com/traefik/traefik/v2/pkg/server.(*TCPEntryPoint).Start+0xbd		/go/src/github.com/traefik/traefik/pkg/server/server_entrypoint_tcp.go:174
+
+2 @ 0x43dac5 0x44dc6f 0x4d1747 0x4d1f4c 0x5cab89 0x7dc234 0x474b81
+#	0x4d1746	io.(*pipe).Read+0xe6					/usr/local/go/src/io/pipe.go:57
+#	0x4d1f4b	io.(*PipeReader).Read+0x4b				/usr/local/go/src/io/pipe.go:134
+#	0x5cab88	bufio.(*Scanner).Scan+0xa8				/usr/local/go/src/bufio/scan.go:214
+#	0x7dc233	github.com/sirupsen/logrus.(*Entry).writerScanner+0xb3	/go/pkg/mod/github.com/sirupsen/logrus@v1.7.0/writer.go:59
+
+2 @ 0x43dac5 0x44dc6f 0x73c97c 0x73aac5 0x790470 0x76d934 0x474b81
+#	0x73c97b	net/http.(*http2serverConn).serve+0x59b		/usr/local/go/src/net/http/h2_bundle.go:4428
+#	0x73aac4	net/http.(*http2Server).ServeConn+0x724		/usr/local/go/src/net/http/h2_bundle.go:4038
+#	0x79046f	net/http.http2ConfigureServer.func1+0xef	/usr/local/go/src/net/http/h2_bundle.go:3864
+#	0x76d933	net/http.(*conn).serve+0x1233			/usr/local/go/src/net/http/server.go:1834
+
+1 @ 0x40f1d4 0x470cfd 0x884165 0x474b81
+#	0x470cfc	os/signal.signal_recv+0x9c	/usr/local/go/src/runtime/sigqueue.go:147
+#	0x884164	os/signal.loop+0x24		/usr/local/go/src/os/signal/signal_unix.go:23
+
+1 @ 0x43dac5 0x40690f 0x40654b 0x2a55c19 0x474b81
+#	0x2a55c18	github.com/traefik/traefik/v2/cmd.ContextWithSignal.func1+0x38	/go/src/github.com/traefik/traefik/cmd/context.go:17
+
+1 @ 0x43dac5 0x40690f 0x40654b 0x2b69aac 0x474b81
+#	0x2b69aab	github.com/traefik/traefik/v2/pkg/server.(*Server).Start.func1+0x4b	/go/src/github.com/traefik/traefik/pkg/server/server.go:54
+
+1 @ 0x43dac5 0x40690f 0x40654b 0x2b6dd51 0x2b6dd33 0x2b7250c 0x2a4292e 0x2a42427 0x2b6d6f2 0x2b6d6bb 0x43d689 0x474b81
+#	0x2b6dd50	github.com/traefik/traefik/v2/pkg/server.(*Server).Wait+0x4f0	/go/src/github.com/traefik/traefik/pkg/server/server.go:70
+#	0x2b6dd32	main.runCmd+0x4d2						/go/src/github.com/traefik/traefik/cmd/traefik/traefik.go:168
+#	0x2b7250b	main.main.func1+0x2b						/go/src/github.com/traefik/traefik/cmd/traefik/traefik.go:58
+#	0x2a4292d	github.com/traefik/paerser/cli.run+0x16d			/go/pkg/mod/github.com/traefik/paerser@v0.1.1/cli/commands.go:133
+#	0x2a42426	github.com/traefik/paerser/cli.execute+0x6e6			/go/pkg/mod/github.com/traefik/paerser@v0.1.1/cli/commands.go:67
+#	0x2b6d6f1	github.com/traefik/paerser/cli.Execute+0x411			/go/pkg/mod/github.com/traefik/paerser@v0.1.1/cli/commands.go:51
+#	0x2b6d6ba	main.main+0x3da							/go/src/github.com/traefik/traefik/cmd/traefik/traefik.go:74
+#	0x43d688	runtime.main+0x208						/usr/local/go/src/runtime/proc.go:204
+
+1 @ 0x43dac5 0x40690f 0x40654b 0xd64c68 0x474b81
+#	0xd64c67	github.com/traefik/traefik/v2/pkg/ping.(*Handler).WithContext.func1+0x47	/go/src/github.com/traefik/traefik/pkg/ping/ping.go:26
+
+1 @ 0x43dac5 0x40690f 0x40658b 0x2aba4b1 0x2abdc8d 0xd9cf6f 0x474b81
+#	0x2aba4b0	github.com/traefik/traefik/v2/pkg/metrics.(*prometheusState).ListenValueUpdates+0x50	/go/src/github.com/traefik/traefik/pkg/metrics/prometheus.go:286
+#	0x2abdc8c	github.com/traefik/traefik/v2/pkg/metrics.initStandardRegistry.func1+0x2c		/go/src/github.com/traefik/traefik/pkg/metrics/prometheus.go:105
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e				/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+1 @ 0x43dac5 0x40690f 0x40658b 0xe28beb 0x474b81
+#	0xe28bea	k8s.io/klog/v2.(*loggingT).flushDaemon+0x8a	/go/pkg/mod/k8s.io/klog/v2@v2.3.0/klog.go:1131
+
+1 @ 0x43dac5 0x435d5b 0x46e4b5 0x4f8405 0x4f9445 0x4f9423 0x6153ef 0x62c3ee 0x2b2e2ca 0x766cd8 0x474b81
+#	0x46e4b4	internal/poll.runtime_pollWait+0x54				/usr/local/go/src/runtime/netpoll.go:222
+#	0x4f8404	internal/poll.(*pollDesc).wait+0x44				/usr/local/go/src/internal/poll/fd_poll_runtime.go:87
+#	0x4f9444	internal/poll.(*pollDesc).waitRead+0x1a4			/usr/local/go/src/internal/poll/fd_poll_runtime.go:92
+#	0x4f9422	internal/poll.(*FD).Read+0x182					/usr/local/go/src/internal/poll/fd_unix.go:159
+#	0x6153ee	net.(*netFD).Read+0x4e						/usr/local/go/src/net/fd_posix.go:55
+#	0x62c3ed	net.(*conn).Read+0x8d						/usr/local/go/src/net/net.go:182
+#	0x2b2e2c9	github.com/traefik/traefik/v2/pkg/tcp.(*Conn).Read+0x129	/go/src/github.com/traefik/traefik/pkg/tcp/router.go:192
+#	0x766cd7	net/http.(*connReader).backgroundRead+0x57			/usr/local/go/src/net/http/server.go:690
+
+1 @ 0x43dac5 0x435d5b 0x46e4b5 0x4f8405 0x4f9445 0x4f9423 0x6153ef 0x62c3ee 0x695282 0x533651 0x6954d3 0x6922f5 0x6985bf 0x6985ca 0x5c7ea2 0x4cf9a7 0x1369329 0x13692da 0x1369ba5 0x138a718 0x1389e6f 0x474b81
+#	0x46e4b4	internal/poll.runtime_pollWait+0x54			/usr/local/go/src/runtime/netpoll.go:222
+#	0x4f8404	internal/poll.(*pollDesc).wait+0x44			/usr/local/go/src/internal/poll/fd_poll_runtime.go:87
+#	0x4f9444	internal/poll.(*pollDesc).waitRead+0x1a4		/usr/local/go/src/internal/poll/fd_poll_runtime.go:92
+#	0x4f9422	internal/poll.(*FD).Read+0x182				/usr/local/go/src/internal/poll/fd_unix.go:159
+#	0x6153ee	net.(*netFD).Read+0x4e					/usr/local/go/src/net/fd_posix.go:55
+#	0x62c3ed	net.(*conn).Read+0x8d					/usr/local/go/src/net/net.go:182
+#	0x695281	crypto/tls.(*atLeastReader).Read+0x61			/usr/local/go/src/crypto/tls/conn.go:779
+#	0x533650	bytes.(*Buffer).ReadFrom+0xb0				/usr/local/go/src/bytes/buffer.go:204
+#	0x6954d2	crypto/tls.(*Conn).readFromUntil+0xf2			/usr/local/go/src/crypto/tls/conn.go:801
+#	0x6922f4	crypto/tls.(*Conn).readRecordOrCCS+0x114		/usr/local/go/src/crypto/tls/conn.go:608
+#	0x6985be	crypto/tls.(*Conn).readRecord+0x15e			/usr/local/go/src/crypto/tls/conn.go:576
+#	0x6985c9	crypto/tls.(*Conn).Read+0x169				/usr/local/go/src/crypto/tls/conn.go:1252
+#	0x5c7ea1	bufio.(*Reader).Read+0x221				/usr/local/go/src/bufio/bufio.go:227
+#	0x4cf9a6	io.ReadAtLeast+0x86					/usr/local/go/src/io/io.go:314
+#	0x1369328	io.ReadFull+0x88					/usr/local/go/src/io/io.go:333
+#	0x13692d9	golang.org/x/net/http2.readFrameHeader+0x39		/go/pkg/mod/golang.org/x/net@v0.0.0-20200904194848-62affa334b73/http2/frame.go:237
+#	0x1369ba4	golang.org/x/net/http2.(*Framer).ReadFrame+0xa4		/go/pkg/mod/golang.org/x/net@v0.0.0-20200904194848-62affa334b73/http2/frame.go:492
+#	0x138a717	golang.org/x/net/http2.(*clientConnReadLoop).run+0xd7	/go/pkg/mod/golang.org/x/net@v0.0.0-20200904194848-62affa334b73/http2/transport.go:1794
+#	0x1389e6e	golang.org/x/net/http2.(*ClientConn).readLoop+0x6e	/go/pkg/mod/golang.org/x/net@v0.0.0-20200904194848-62affa334b73/http2/transport.go:1716
+
+1 @ 0x43dac5 0x435d5b 0x46e4b5 0x4f8405 0x4faffc 0x4fafde 0x616965 0x6394d2 0x637ce5 0x2b6700f 0x2b663be 0x474b81
+#	0x46e4b4	internal/poll.runtime_pollWait+0x54						/usr/local/go/src/runtime/netpoll.go:222
+#	0x4f8404	internal/poll.(*pollDesc).wait+0x44						/usr/local/go/src/internal/poll/fd_poll_runtime.go:87
+#	0x4faffb	internal/poll.(*pollDesc).waitRead+0x1fb					/usr/local/go/src/internal/poll/fd_poll_runtime.go:92
+#	0x4fafdd	internal/poll.(*FD).Accept+0x1dd						/usr/local/go/src/internal/poll/fd_unix.go:394
+#	0x616964	net.(*netFD).accept+0x44							/usr/local/go/src/net/fd_unix.go:172
+#	0x6394d1	net.(*TCPListener).accept+0x31							/usr/local/go/src/net/tcpsock_posix.go:139
+#	0x637ce4	net.(*TCPListener).AcceptTCP+0x64						/usr/local/go/src/net/tcpsock.go:248
+#	0x2b6700e	github.com/traefik/traefik/v2/pkg/server.tcpKeepAliveListener.Accept+0x2e	/go/src/github.com/traefik/traefik/pkg/server/server_entrypoint_tcp.go:339
+#	0x2b663bd	github.com/traefik/traefik/v2/pkg/server.(*TCPEntryPoint).Start+0xbd		/go/src/github.com/traefik/traefik/pkg/server/server_entrypoint_tcp.go:174
+
+1 @ 0x43dac5 0x44dc6f 0x140a345 0x474b81
+#	0x140a344	go.opencensus.io/stats/view.(*worker).start+0x104	/go/pkg/mod/go.opencensus.io@v0.22.3/stats/view/worker.go:154
+
+1 @ 0x43dac5 0x44dc6f 0x2725965 0xd9d11a 0xd6a402 0x2725fef 0x2725ead 0xd9ce64 0xd9cf6f 0x474b81
+#	0x2725964	github.com/traefik/traefik/v2/pkg/provider/kubernetes/crd.(*Provider).Provide.func1.1+0x404	/go/src/github.com/traefik/traefik/pkg/provider/kubernetes/crd/kubernetes.go:131
+#	0xd9d119	github.com/traefik/traefik/v2/pkg/safe.OperationWithRecover.func1+0x59				/go/src/github.com/traefik/traefik/pkg/safe/routine.go:78
+#	0xd6a401	github.com/cenkalti/backoff/v4.RetryNotifyWithTimer+0x101					/go/pkg/mod/github.com/cenkalti/backoff/v4@v4.0.2/retry.go:52
+#	0x2725fee	github.com/cenkalti/backoff/v4.RetryNotify+0x2ae						/go/pkg/mod/github.com/cenkalti/backoff/v4@v4.0.2/retry.go:31
+#	0x2725eac	github.com/traefik/traefik/v2/pkg/provider/kubernetes/crd.(*Provider).Provide.func1+0x16c	/go/src/github.com/traefik/traefik/pkg/provider/kubernetes/crd/kubernetes.go:165
+#	0xd9ce63	github.com/traefik/traefik/v2/pkg/safe.(*Pool).GoCtx.func1+0x63					/go/src/github.com/traefik/traefik/pkg/safe/routine.go:36
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e					/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+1 @ 0x43dac5 0x44dc6f 0x2767065 0xd9d11a 0xd6a402 0x27676ef 0x27675ad 0xd9ce64 0xd9cf6f 0x474b81
+#	0x2767064	github.com/traefik/traefik/v2/pkg/provider/kubernetes/ingress.(*Provider).Provide.func1.1+0x404	/go/src/github.com/traefik/traefik/pkg/provider/kubernetes/ingress/kubernetes.go:131
+#	0xd9d119	github.com/traefik/traefik/v2/pkg/safe.OperationWithRecover.func1+0x59				/go/src/github.com/traefik/traefik/pkg/safe/routine.go:78
+#	0xd6a401	github.com/cenkalti/backoff/v4.RetryNotifyWithTimer+0x101					/go/pkg/mod/github.com/cenkalti/backoff/v4@v4.0.2/retry.go:52
+#	0x27676ee	github.com/cenkalti/backoff/v4.RetryNotify+0x2ae						/go/pkg/mod/github.com/cenkalti/backoff/v4@v4.0.2/retry.go:31
+#	0x27675ac	github.com/traefik/traefik/v2/pkg/provider/kubernetes/ingress.(*Provider).Provide.func1+0x16c	/go/src/github.com/traefik/traefik/pkg/provider/kubernetes/ingress/kubernetes.go:168
+#	0xd9ce63	github.com/traefik/traefik/v2/pkg/safe.(*Pool).GoCtx.func1+0x63					/go/src/github.com/traefik/traefik/pkg/safe/routine.go:36
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e					/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+1 @ 0x43dac5 0x44dc6f 0x2b62d2b 0xd9ce64 0xd9cf6f 0x474b81
+#	0x2b62d2a	github.com/traefik/traefik/v2/pkg/server.(*ConfigurationWatcher).listenProviders+0x10a	/go/src/github.com/traefik/traefik/pkg/server/configurationwatcher.go:107
+#	0xd9ce63	github.com/traefik/traefik/v2/pkg/safe.(*Pool).GoCtx.func1+0x63				/go/src/github.com/traefik/traefik/pkg/safe/routine.go:36
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e				/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+1 @ 0x43dac5 0x44dc6f 0x2b62f85 0xd9ce64 0xd9cf6f 0x474b81
+#	0x2b62f84	github.com/traefik/traefik/v2/pkg/server.(*ConfigurationWatcher).listenConfigurations+0x104	/go/src/github.com/traefik/traefik/pkg/server/configurationwatcher.go:128
+#	0xd9ce63	github.com/traefik/traefik/v2/pkg/safe.(*Pool).GoCtx.func1+0x63					/go/src/github.com/traefik/traefik/pkg/safe/routine.go:36
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e					/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+1 @ 0x43dac5 0x44dc6f 0x2b69394 0xd9ce64 0xd9cf6f 0x474b81
+#	0x2b69393	github.com/traefik/traefik/v2/pkg/server.(*Server).listenSignals+0xf3	/go/src/github.com/traefik/traefik/pkg/server/server_signals.go:19
+#	0xd9ce63	github.com/traefik/traefik/v2/pkg/safe.(*Pool).GoCtx.func1+0x63		/go/src/github.com/traefik/traefik/pkg/safe/routine.go:36
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e		/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+1 @ 0x43dac5 0x4716bf 0x2b73019 0xd9cf6f 0x474b81
+#	0x4716be	time.Sleep+0xbe							/usr/local/go/src/runtime/time.go:188
+#	0x2b73018	main.checkNewVersion.func1+0x38					/go/src/github.com/traefik/traefik/cmd/traefik/traefik.go:508
+#	0xd9cf6e	github.com/traefik/traefik/v2/pkg/safe.GoWithRecover.func1+0x4e	/go/src/github.com/traefik/traefik/pkg/safe/routine.go:59
+
+1 @ 0x46e05d 0xb35d42 0xb35b05 0xb325f2 0xb40f65 0xb42845 0x76e1a4 0x7c6b26 0x2ad6f46 0x2ac1cad 0x7c6b26 0x2b23187 0x2ac1cad 0x18d7109 0x18d76a7 0x76e1a4 0x2ad4572 0x2ac1390 0x2b5bfda 0x2b5cb4e 0x771ca3 0x76cfad 0x474b81
+#	0x46e05c	runtime/pprof.runtime_goroutineProfileWithLabels+0x5c							/usr/local/go/src/runtime/mprof.go:716
+#	0xb35d41	runtime/pprof.writeRuntimeProfile+0xe1									/usr/local/go/src/runtime/pprof/pprof.go:724
+#	0xb35b04	runtime/pprof.writeGoroutine+0xa4									/usr/local/go/src/runtime/pprof/pprof.go:684
+#	0xb325f1	runtime/pprof.(*Profile).WriteTo+0x3f1									/usr/local/go/src/runtime/pprof/pprof.go:331
+#	0xb40f64	net/http/pprof.handler.ServeHTTP+0x384									/usr/local/go/src/net/http/pprof/pprof.go:256
+#	0xb42844	net/http/pprof.Index+0x944										/usr/local/go/src/net/http/pprof/pprof.go:367
+#	0x76e1a3	net/http.HandlerFunc.ServeHTTP+0x43									/usr/local/go/src/net/http/server.go:2042
+#	0x7c6b25	github.com/gorilla/mux.(*Router).ServeHTTP+0x105							/go/pkg/mod/github.com/containous/mux@v0.0.0-20181024131434-c33f32e26898/mux.go:133
+#	0x2ad6f45	github.com/traefik/traefik/v2/pkg/middlewares/tracing.(*forwarderMiddleware).ServeHTTP+0x605		/go/src/github.com/traefik/traefik/pkg/middlewares/tracing/forwarder.go:38
+#	0x2ac1cac	github.com/traefik/traefik/v2/pkg/middlewares/accesslog.(*FieldHandler).ServeHTTP+0x18c			/go/src/github.com/traefik/traefik/pkg/middlewares/accesslog/field_middleware.go:29
+#	0x7c6b25	github.com/gorilla/mux.(*Router).ServeHTTP+0x105							/go/pkg/mod/github.com/containous/mux@v0.0.0-20181024131434-c33f32e26898/mux.go:133
+#	0x2b23186	github.com/traefik/traefik/v2/pkg/middlewares/recovery.(*recovery).ServeHTTP+0x86			/go/src/github.com/traefik/traefik/pkg/middlewares/recovery/recovery.go:32
+#	0x2ac1cac	github.com/traefik/traefik/v2/pkg/middlewares/accesslog.(*FieldHandler).ServeHTTP+0x18c			/go/src/github.com/traefik/traefik/pkg/middlewares/accesslog/field_middleware.go:29
+#	0x18d7108	github.com/traefik/traefik/v2/pkg/middlewares/requestdecorator.(*RequestDecorator).ServeHTTP+0x388	/go/src/github.com/traefik/traefik/pkg/middlewares/requestdecorator/request_decorator.go:47
+#	0x18d76a6	github.com/traefik/traefik/v2/pkg/middlewares/requestdecorator.WrapHandler.func1.1+0x86			/go/src/github.com/traefik/traefik/pkg/middlewares/requestdecorator/request_decorator.go:84
+#	0x76e1a3	net/http.HandlerFunc.ServeHTTP+0x43									/usr/local/go/src/net/http/server.go:2042
+#	0x2ad4571	github.com/traefik/traefik/v2/pkg/middlewares/metrics.(*metricsMiddleware).ServeHTTP+0x5b1		/go/src/github.com/traefik/traefik/pkg/middlewares/metrics/metrics.go:101
+#	0x2ac138f	github.com/traefik/traefik/v2/pkg/middlewares.(*HTTPHandlerSwitcher).ServeHTTP+0x6f			/go/src/github.com/traefik/traefik/pkg/middlewares/handler_switcher.go:23
+#	0x2b5bfd9	github.com/traefik/traefik/v2/pkg/middlewares/forwardedheaders.(*XForwarded).ServeHTTP+0xf9		/go/src/github.com/traefik/traefik/pkg/middlewares/forwardedheaders/forwarded_header.go:183
+#	0x2b5cb4d	golang.org/x/net/http2/h2c.h2cHandler.ServeHTTP+0x30d							/go/pkg/mod/golang.org/x/net@v0.0.0-20200904194848-62affa334b73/http2/h2c/h2c.go:98
+#	0x771ca2	net/http.serverHandler.ServeHTTP+0xa2									/usr/local/go/src/net/http/server.go:2843
+#	0x76cfac	net/http.(*conn).serve+0x8ac										/usr/local/go/src/net/http/server.go:1925
+
+

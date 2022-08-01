@@ -1,0 +1,7 @@
+[tls.stores]
+  [tls.stores.default]
+
+[[tls.certificates]]
+  certFile = "/etc/traefik/dynamic/certs/${CERTNAME}.pem"
+  keyFile = "/etc/traefik/dynamic/certs/${CERTNAME}.key"
+  stores = ["default"]

@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-ingress-controller
+  namespace: default
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+  namespace: default
+  labels:
+    app: traefik
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - name: traefik
+          image: traefik:v2.6
+          imagePullPolicy: IfNotPresent
+          args:
+            - --api.insecure
+            - --entrypoints.web.Address=:80
+            - --global.checknewversion=false
+            - --global.sendanonymoususage=false
+            - --log.level=DEBUG
+            - --providers.kubernetescrd
+          ports:
+            - name: web
+              containerPort: 80
+            - name: admin
+              containerPort: 8080
+          tty: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: default
+
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      name: web
+      port: 80
+    - protocol: TCP
+      name: admin
+      port: 8080
+  selector:
+    app: traefik

@@ -1,0 +1,32 @@
+version: '3.6'
+
+# docker run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:15.0.2
+
+services:
+  traefik:
+    image: traefik:2.5
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+
+  whoami:
+    image: traefik/whoami # https://github.com/traefik/whoami
+    labels:
+      traefik.http.middlewares.test-auth.forwardauth.address: http://keycloak:8080/auth
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      traefik.http.routers.whoami.middlewares: test-auth@docker
+
+  keaycloack:
+    image: quay.io/keycloak/keycloak:15.0.2
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    labels:
+      traefik.http.routers.keycloak.rule: Host(`keycloak.localhost`)

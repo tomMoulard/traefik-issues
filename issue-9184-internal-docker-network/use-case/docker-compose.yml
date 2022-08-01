@@ -1,0 +1,30 @@
+version: "3.3"
+
+networks:
+  foo:
+    name: foo
+    internal: true
+
+services:
+  traefik:
+    networks:
+      - foo
+    image: traefik:v2.8.1@sha256:1212133eacd6dd169f9cdc56161bc866788ec2debf66d7d504acf2fc80233c10
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    # additions
+    # tty: true
+
+
+  whoami:
+    networks:
+      - foo
+    image: traefik/whoami #:v1.8.1@sha256:8932271344cf4da580c43c41dbf56a49cb15b250fe60e5dc43530f217eff0daf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=foo"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      # - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.port=80"

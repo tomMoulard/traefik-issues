@@ -1,0 +1,16 @@
+[log]
+  level = "DEBUG"
+
+# Enable API and dashboard
+[api]
+  insecure = true
+
+[ping]
+
+# Enable Docker configuration backend
+[providers.docker]
+  exposedByDefault = false
+  network = "traefik"
+
+[providers.file]
+   directory = "/traefik-d"

@@ -1,0 +1,17 @@
+{
+	"ulid": "01FY70CVN31P4398CHWMTPSHYK",
+	"minTime": 1645538400000,
+	"maxTime": 1645545600000,
+	"stats": {
+		"numSamples": 87010,
+		"numSeries": 784,
+		"numChunks": 1427
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01FY70CVN31P4398CHWMTPSHYK"
+		]
+	},
+	"version": 1
+}

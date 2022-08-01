@@ -1,0 +1,38 @@
+version: '3.5'
+
+services:
+
+  traefik:
+    image: traefik:v2.4
+    command:
+      - "--log.level=DEBUG"
+      - "--api"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.delugetcp.address=:58846"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "58846:58846"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.http.routers.traefik.rule=Host(`traefik.docker.localhost`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=web"
+
+  deluge:
+    image: linuxserver/deluge
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Paris
+    ports:
+      - "58847:58846"
+    labels:
+      - "traefik.http.routers.deluge.rule=Host(`deluge.docker.localhost`)"
+      - "traefik.http.routers.deluge.entrypoints=web"
+      - "traefik.http.services.deluge.loadbalancer.server.port=8112"
+      - "traefik.tcp.routers.delugetcp.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.delugetcp.entrypoints=delugetcp"
+      - "traefik.tcp.services.delugetcp.loadbalancer.server.port=58846"

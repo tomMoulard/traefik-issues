@@ -1,0 +1,88 @@
+version: '3.6'
+
+# see https://learn.hashicorp.com/tutorials/nomad/consul-service-mesh
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.5
+    tty: true
+    command:
+      - '--api.insecure=true'
+      - '--log.level=DEBUG'
+      - '--providers.consulcatalog.endpoint.address=consul:8500'
+      - '--providers.consulcatalog=true'
+      - '--providers.consulcatalog.connectaware=true'
+      - '--providers.consulcatalog.connectbydefault=true'
+      - '--providers.consulcatalog.servicename=traefik'
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.websecure.address=:443'
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # consul:
+    # image: consul:1.6.2
+    # ports:
+      # - 8500:8500
+    # command: "agent -server -bootstrap -ui -client 0.0.0.0 -hcl 'connect { enabled = true }' -grpc-port 8502 -config-dir /json"
+    # volumes:
+      # - './jobs:/jobs'
+
+  # consul-agent:
+    # image: consul:1.6.2
+    # ports:
+      # - 8501:8500
+    # command: "agent -retry-join consul -client 0.0.0.0"
+    # links:
+      # - consul
+
+  nomad-server:
+    image: rms1000watt/nomad:latest
+    command: /bin/nomad agent -config=/server.hcl
+    hostname: nomad-server
+    tty: true
+    environment:
+      NOMAD_SERVER_HTTP_PORT: 4646
+      NOMAD_SERVER_RPC_PORT: 4647
+      NOMAD_SERVER_SERF_PORT: 4648
+      NOMAD_DATA_DIR: /tmp/nomad/data/server
+    ports:
+      - 4646:4646
+      - 4647:4647
+      - 4648:4648
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./hcl/server.hcl.tpl:/server.hcl.tpl
+    - /tmp:/tmp
+
+  nomad-client:
+    image: rms1000watt/nomad:latest
+    command: /bin/nomad agent -config=/client.hcl
+    hostname: nomad-client
+    tty: true
+    environment:
+      NOMAD_CLIENT_HTTP_PORT: 6656
+      NOMAD_SERVER_ADDRESS_1: nomad-server:4647
+      NOMAD_DATA_DIR: /tmp/nomad/data/client
+    privileged: true
+    ports:
+      - 6656:6656
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./hcl/client.hcl.tpl:/client.hcl.tpl
+    - /tmp:/tmp
+    depends_on:
+    - nomad-server
+
+  whoami:
+    image: traefik/whoami
+
+  whoami-with-crt:
+    image: traefik/whoami
+    command: -name connect -cert /certs/_wildcard.localhost.pem -key /certs/_wildcard.localhost-key.pem
+    volumes:
+      - ./certs:/certs

@@ -1,0 +1,61 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.5
+    command:
+      - '--providers.docker'
+      - '--providers.file.directory=/dyn'
+      - '--log.level=DEBUG'
+      - '--api.insecure=true'
+      # - '--entrypoints.web.address=:80'
+      # - '--entrypoints.udp.address=:8000/udp'
+      # - '--entrypoints.udp.udp.timeout=1s'
+      # - '--entrypoints.fudp.address=:8001/udp'
+      - '--entrypoints.tcp.address=:8002/tcp'
+      - '--entrypoints.ftcp.address=:8003/tcp'
+    ports:
+      - "80:80"
+      # - "8000:8000/udp"
+      - "8002:8002/tcp"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dyn:/dyn
+    tty: true
+  milou:
+    image: traefik/whoamitcp
+    command: |
+      -name milou
+    labels:
+      - "traefik.tcp.routers.milou.service=milou"
+      - "traefik.tcp.routers.milou.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.milou.entrypoints=ftcp"
+      - "traefik.tcp.services.milou.loadbalancer.server.port=8080"
+  hadoc:
+    image: traefik/whoamitcp
+    command: |
+      -name hadoc
+    labels:
+      - "traefik.tcp.routers.hadoc.service=hadoc"
+      - "traefik.tcp.routers.hadoc.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.hadoc.entrypoints=ftcp"
+      - "traefik.tcp.services.hadoc.loadbalancer.server.port=8080"
+  tintin:
+    image: tommoulard/whoamiudp
+    command: |
+      -name tintin
+    labels:
+      - "traefik.udp.routers.tintin.service=tintin"
+      - "traefik.udp.routers.tintin.entrypoints=fudp"
+      - "traefik.udp.services.tintin.loadbalancer.server.port=8080"
+  tournesol:
+    image: tommoulard/whoamiudp
+    command: |
+      -name tournesol
+    labels:
+      - "traefik.udp.routers.tournesol.service=tournesol"
+      - "traefik.udp.routers.tournesol.entrypoints=fudp"
+      - "traefik.udp.services.tournesol.loadbalancer.server.port=8080"
+

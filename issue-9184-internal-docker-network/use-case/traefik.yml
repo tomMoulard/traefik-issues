@@ -1,0 +1,10 @@
+api:
+  insecure: true
+
+log:
+  level: DEBUG
+
+providers:
+  docker:
+    exposedbydefault: false
+    endpoint: "unix:///var/run/docker.sock"

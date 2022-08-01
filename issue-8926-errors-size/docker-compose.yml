@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:v2.7
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      traefik.http.routers.whoami.middlewares: test-errorpage
+
+      traefik.http.middlewares.test-errorpage.errors.status: 400-599
+      traefik.http.middlewares.test-errorpage.errors.service: error
+      # traefik.http.middlewares.test-errorpage.errors.service: caddy
+      traefik.http.middlewares.test-errorpage.errors.query: /{status}.html
+
+  error:
+    image: python
+    command: python -m http.server --directory /toto
+    volumes:
+      - ./errors:/toto/
+    labels:
+      traefik.http.routers.error.rule: Host(`error.localhost`)
+      traefik.http.services.error.loadbalancer.server.port: 8000
+  caddy:
+    image: caddy
+    volumes:
+      - ./errors:/usr/share/caddy/
+    labels:
+      traefik.http.routers.caddy.rule: Host(`caddy.localhost`)
+      traefik.http.services.caddy.loadbalancer.server.port: 80

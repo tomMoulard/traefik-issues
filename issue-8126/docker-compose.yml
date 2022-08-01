@@ -1,0 +1,36 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.4
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+
+      # TLS
+      - '--entrypoints.websecure.address=:443'
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.web.http.redirections.entrypoint.to=websecure'
+      - '--entrypoints.websecure.http.tls.certresolver=myresolver'
+      - '--providers.file.directory=/dynamic_conf/'
+
+      - '--entrypoints.websecure.http.tls.options=mytlsoption@file'
+      - '--entrypoints.websecure.http.tls.certresolver=le'
+      - '--certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory'
+      - '--certificatesresolvers.le.acme.httpchallenge.entrypoint=web'
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - './dynamic_conf:/dynamic_conf'
+    labels:
+      - "traefik.http.routers.traefik.rule=Host(`traefik.example.com`)"
+  whoami:
+    # image: traefik/whoamitcp
+    image: traefik/whoami
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.example.com`)"

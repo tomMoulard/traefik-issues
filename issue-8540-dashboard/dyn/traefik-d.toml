@@ -1,0 +1,18 @@
+[http]
+  [http.routers]
+    [http.routers.dotnet-http]
+      service = "Service03"
+      rule = "PathPrefix(`/dotnet`)"
+  [http.services]
+    [http.services.Service03.weighted]
+     [[http.services.Service03.weighted.services]]
+        name = "dotnet-tool-2"
+    [http.services.dotnet-tool]
+      [http.services.dotnet-tool.loadBalancer]
+        passHostHeader = true
+        [http.services.dotnet-tool.loadBalancer.healthCheck]
+          path = "/whoami"
+          interval = "10s"
+          timeout = "3s"
+        [[http.services.dotnet-tool.loadBalancer.servers]]
+          url = "http://localhost:8083"

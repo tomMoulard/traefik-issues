@@ -1,0 +1,37 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.5
+    tty: true
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+      - '--entryPoints.web.address=:80'
+      - '--entryPoints.websecure.address=:443'
+      # - '--entryPoints.udp.address=:8443'
+      - '--certificatesresolvers.myresolver.acme.email=tom@moulard.org'
+      - '--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web'
+      - '--certificatesresolvers.myresolver.acme.httpchallenge=true'
+      - '--certificatesresolvers.myresolver.acme.storage=/acme.json'
+      - '--entrypoints.websecure.http.tls.certresolver=myresolver'
+
+      - '--experimental.http3=true'
+      - '--entrypoints.websecure.enablehttp3=true'
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+      - "8443:8443"
+      - "8443:8443/udp"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - ./acme.json:/acme.json
+  whoami:
+    # image: traefik/whoamitcp
+    image: traefik/whoami
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`ssh.couill.eu`)"

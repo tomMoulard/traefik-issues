@@ -1,0 +1,8 @@
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: true
+additionalArguments:
+  - "--log.level=DEBUG"
+  # - "--providers.kubernetesingress.ingressclass=traefik-kafka"
+  - "--providers.kubernetescrd.labelselector=ingressclass=traefik-kafka"

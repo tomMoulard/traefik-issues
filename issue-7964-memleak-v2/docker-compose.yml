@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  grafana:
+    image: grafana/grafana:7.2.2
+    volumes:
+      - './grafana/grafana:/var/lib/grafana'
+    user: 1000:1000
+    restart: always
+    depends_on:
+      - prometheus
+    environment:
+      - 'GF_METRICS_ENABLED=true'
+      - 'GF_AUTH_ANONYMOUS_ENABLED=true'
+      - 'GF_AUTH_ANONYMOUS_ORG_ROLE=Admin'
+      - 'GF_AUTH_BASIC_ENABLED=false'
+      - 'GF_AUTH_DISABLE_LOGIN_FORM=true'
+      - 'GF_INSTALL_PLUGINS=grafana-piechart-panel'
+    ports:
+      - "3000:3000"
+
+  prometheus:
+    image: prom/prometheus:v2.22.0
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    user: 1000:1000
+    restart: always
+    volumes:
+      - './prometheus/data:/prometheus'
+      - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"

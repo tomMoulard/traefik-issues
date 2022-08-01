@@ -1,0 +1,32 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.5
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+
+      # - --pilot.token=a3099e99-2aa3-4100-b2b0-ef2ebb92b079
+      # - --experimental.plugins.htransformation.modulename=github.com/tommoulard/htransformation
+      # - --experimental.plugins.htransformation.version=v0.2.3
+      - --providers.file.directory=/dyn
+      # - --experimental.localPlugins.ht.moduleName=github.com/tommoulard/ht
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dyn:/dyn
+      # - ./plugins-local:/plugins-local
+    tty: true
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      # traefik.http.routers.whoami.middlewares: my-htransformation@file
+      traefik.http.routers.whoami.middlewares: my-header@file

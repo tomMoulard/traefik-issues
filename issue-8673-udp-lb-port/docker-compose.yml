@@ -1,0 +1,36 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:v2.6
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+      - --entrypoints.http.address=:80
+      - --entrypoints.dns.address=:53
+      - --entrypoints.dns-udp.address=:53/udp
+      - --entrypoints.dhcp-udp.address=:67/udp
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+  pihole:
+    image: pihole/pihole
+    labels:
+      traefik.http.routers.pihole-http.rule: Host(`pihole.localhost`)
+      traefik.http.services.pihole-http.loadbalancer.server.port: 80
+
+      traefik.tcp.routers.pihole-dns-tcp.rule: HostSNI(`*`)
+      traefik.tcp.services.pihole-dns-tcp.loadbalancer.server.port: 53
+
+      traefik.udp.routers.pihole-dns-udp.service: pihole-dns-udp
+      traefik.udp.routers.pihole-dns-udp.entrypoints: dns-udp
+      traefik.udp.services.pihole-dns-udp.loadbalancer.server.port: 53
+
+      traefik.udp.routers.pihole-dhcp-udp.service: pihole-dhcp-udp
+      traefik.udp.routers.pihole-dhcp-udp.entrypoints: dhcp-udp
+      traefik.udp.services.pihole-dhcp-udp.loadbalancer.server.port: 67

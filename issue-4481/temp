@@ -1,0 +1,9 @@
+ - `'500 Internal Server Error' caused by: http: server closed idle connection`
+ - `'500 Internal Server Error' caused by: readLoopPeekFailLocked: read tcp [...]->[...]: read: connection reset by peer`
+ - `'500 Internal Server Error' caused by: write tcp [...]->[...]: write: broken pipe`
+ - `'500 Internal Server Error' caused by: write tcp [...]->[...]: write: connection reset by peer`
+
+  - `'502 Bad Gateway' caused by: readfrom tcp [...]->[...]: write tcp [...]->[...]: use of closed network connection`
+ - `'502 Bad Gateway' caused by: EOF`
+ - `'502 Bad Gateway' caused by: read tcp [...]->[...]: read: connection reset by peer`
+ - `'502 Bad Gateway' caused by: readfrom tcp [...]->[...]: write tcp [...]->[...]: write: broken pipe`

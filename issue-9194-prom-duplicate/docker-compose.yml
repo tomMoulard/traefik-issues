@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:v2.8
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      # - --providers.file.directory=/dyn
+      - --log.level=DEBUG
+      # - --metrics.prometheus.manualRouting=true
+      - --metrics.prometheus.addRoutersLabels=true
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - ./dyn:/dyn
+    tty: true
+    # environment:
+      # GODEBUG: http2debug=2
+      # GRPC_TRACE: all
+      # GRPC_VERBOSITY: DEBUG
+
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    scale: 3
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      traefik.http.services.whoami.loadbalancer.server.port: 80
+
+      traefik.http.services.whoami.loadbalancer.healthcheck.scheme: http
+      traefik.http.services.whoami.loadbalancer.healthcheck.hostname: whoami
+      traefik.http.services.whoami.loadbalancer.healthcheck.port: 80
+      traefik.http.services.whoami.loadbalancer.healthcheck.path: /health
+      traefik.http.services.whoami.loadbalancer.healthcheck.interval: 5s
+      traefik.http.services.whoami.loadbalancer.healthcheck.timeout: 100ms
+
+  # not-whoami:
+    # # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    # image: traefik/whoami # https://github.com/traefik/whoami
+    # command: -name not-whoami
+    # labels:
+      # traefik.http.routers.not-whoami.rule: Host(`not.whoami.localhost`)
+      # traefik.http.services.whoami.loadbalancer.server.port: 80

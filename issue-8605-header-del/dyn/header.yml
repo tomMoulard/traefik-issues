@@ -1,0 +1,14 @@
+http:
+  middlewares:
+    my-header:
+      headers:
+        customRequestHeaders:
+          Date: ""
+        customResponseHeaders:
+          # Date: ""
+          toto: "tata"
+          Server: "foo"
+          # titi: ""
+          # Content-Length: ""
+          # Content-Type: ""
+          # Transfer-Encoding: ""

@@ -1,0 +1,64 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: mynamespace
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: default
+  # namespace: mynamespace
+  name: whoamitcp
+  labels:
+    app: whoamitcp
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: whoamitcp
+  template:
+    metadata:
+      labels:
+        app: whoamitcp
+    spec:
+      containers:
+        - name: whoamitcp
+          image: traefik/whoamitcp
+          ports:
+            - name: web
+              containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoamitcp
+
+spec:
+  ports:
+    - protocol: TCP
+      name: web
+      port: 8080
+  selector:
+    app: whoamitcp
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: simplecrd
+  namespace: default
+  # namespace: mynamespace
+  labels:
+      ingressclass: traefik-kafka
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: HostSNI(`*`)
+    services:
+    - name: whoamitcp
+      port: 8080

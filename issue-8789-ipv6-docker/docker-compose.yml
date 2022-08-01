@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  # traefik:
+    # # image: traefik/traefik:latest
+    # image: traefik:v2.8
+    # command:
+      # - --api.insecure=true
+      # - --providers.docker
+      # # - --providers.file.directory=/dyn
+      # - --log.level=DEBUG
+    # ports:
+      # - "80:80"
+      # - "8080:8080"
+    # volumes:
+      # - /var/run/docker.sock:/var/run/docker.sock
+      # # - ./dyn:/dyn
+    # tty: true
+
+  whoami:
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    networks:
+      - default
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      traefik.http.services.whoami.loadbalancer.server.port: 80
+
+networks:
+  # default:
+    # enable_ipv6: true
+    # ipam:
+      # config:
+       # - subnet: fd10:255:3::/64
+       # - subnet: 10.128.3.0/24
+       # - subnet: 127.42.0.0/24
+  default:
+    external: true
+    name: ext_net

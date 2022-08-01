@@ -1,0 +1,18 @@
+version: '3.6'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:2.4
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/traefik.yml
+      - ./traefik.d/:/traefik.d/
+  whoami:
+    # image: traefik/whoamitcp
+    image: traefik/whoami
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"

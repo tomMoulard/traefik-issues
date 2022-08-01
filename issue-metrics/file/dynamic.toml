@@ -1,0 +1,14 @@
+[http.routers.dashboard]
+   rule = "Host(`dashboard.docker.localhost`)"
+   service = "api@internal"
+
+{{ range $i, $e := until 10 }}
+    [http.routers.powpow-{{ $e }}]
+        rule = "Host(`app-{{ $e }}.docker.localhost`)"
+        service = "powpow-{{ $e }}"
+    [http.services.powpow-{{ $e }}]
+        [http.services.powpow-{{ $e }}.loadBalancer]
+            passHostHeader = false
+        [[http.services.powpow-{{ $e }}.loadBalancer.servers]]
+            url = "https://httpdump.app/inspect/954db6cf-3239-4892-afa9-c85d236fe177"
+{{ end }}

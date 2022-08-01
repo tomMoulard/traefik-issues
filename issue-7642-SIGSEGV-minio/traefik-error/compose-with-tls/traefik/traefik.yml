@@ -1,0 +1,12 @@
+entryPoints:
+  minio:
+    address: :9100
+providers:
+  file:
+    filename: /etc/traefik/dynamic_conf.yml
+api:
+  insecure: true
+log:
+  level: DEBUG
+serversTransport:
+  insecureSkipVerify: true

@@ -1,0 +1,12 @@
+http:
+  routers:
+    int:
+      rule: Host(`dynamic.localhost`)
+      service: service
+      entrypoints: websecure
+
+  services:
+    service:
+      loadBalancer:
+        servers:
+          - url: http://172.18.0.2/

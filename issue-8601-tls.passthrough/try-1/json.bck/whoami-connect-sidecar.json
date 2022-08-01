@@ -1,0 +1,35 @@
+{
+    "service": {
+        "name": "whoami-connect-sidecar",
+        "tags": [
+            "traefik.enable=true",
+            "traefik.connect=true",
+            "traefik.tcp.routers.whoami-sidecar.rule=HostSNI(`*`)",
+            "traefik.tcp.routers.whoami-sidecar.tls.passthrough=true"
+        ],
+        "address": "whoami-connect-sidecar",
+        "port": 443,
+        "kind": "connect-proxy",
+        "checks": [
+            {
+                "Name": "Connect Sidecar Listening",
+                "TCP": "whoami-connect-sidecar:443",
+                "Interval": "10s"
+            },
+            {
+                "name": "Connect Sidecar Aliasing web",
+                "alias_service": "whoami-connect"
+            }
+        ],
+        "proxy": {
+            "destination_service_name": "whoami-connect",
+            "destination_service_id": "whoami-connect1",
+            "local_service_address": "whoami-connect",
+            "local_service_port": 80,
+            "config": {
+                "bind_address": "0.0.0.0",
+                "envoy_local_cluster_json": "{\n    \"name\": \"local_app\",\n    \"connect_timeout\": \"1s\",\n    \"type\": \"LOGICAL_DNS\",\n    \"hosts\": [\n        {\n            \"socket_address\": {\n                \"address\": \"whoami-connect\",\n                \"port_value\": 80\n            }\n        }\n    ]\n}"
+            }
+        }
+    }
+}

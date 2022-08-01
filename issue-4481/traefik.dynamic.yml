@@ -1,0 +1,17 @@
+http:
+  routers:
+    router-ka:
+      service: whoami-ka
+      rule: Host(`ka.whoami.localhost`)
+    Router-nka:
+      service: whoami-nka
+      rule: Host(`nka.whoami.localhost`)
+  services:
+    whoami-ka:
+      loadBalancer:
+        servers:
+          - url: http://localhost:3031
+    whoami-nka:
+      loadBalancer:
+        servers:
+          - url: http://localhost:3030

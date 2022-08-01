@@ -1,0 +1,24 @@
+http:
+  routers:
+    routerTest:
+      service: srv-grpc
+      rule: Host(`frontend.localhost`)
+      entryPoints:
+        - "web"
+    routerSecured:
+      service: srv-grpc
+      rule: Host(`secured.frontend.localhost`)
+      tls: {}
+      entryPoints:
+        - "websecure"
+
+  services:
+    srv-grpc:
+      loadBalancer:
+        servers:
+        - url: h2c://grpc:50051
+
+tls:
+  certificates:
+  - certFile: /certs/secured.frontend.localhost.pem
+    keyFile: /certs/secured.frontend.localhost-key.pem

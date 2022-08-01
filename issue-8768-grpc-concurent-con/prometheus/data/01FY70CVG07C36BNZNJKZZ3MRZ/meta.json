@@ -1,0 +1,17 @@
+{
+	"ulid": "01FY70CVG07C36BNZNJKZZ3MRZ",
+	"minTime": 1645531200000,
+	"maxTime": 1645538400000,
+	"stats": {
+		"numSamples": 19739,
+		"numSeries": 760,
+		"numChunks": 760
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01FY70CVG07C36BNZNJKZZ3MRZ"
+		]
+	},
+	"version": 1
+}

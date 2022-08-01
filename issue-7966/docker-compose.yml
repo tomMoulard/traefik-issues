@@ -1,0 +1,68 @@
+version: '3'
+
+networks:
+  t2_proxy:
+
+services:
+  traefik:
+    image: traefik:v2.4.5
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - t2_proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/traefik.yml:/traefik.yml:ro
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik-secure.entrypoints=websecure"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=http"
+        #Authelia forward auth
+      - "traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://example.com/#/"
+      - "traefik.http.middlewares.authelia.forwardauth.trustforwardheader=true"
+      - "traefik.http.middlewares.authelia.forwardauth.authresponseheaders=Remote-User, Remote-Groups"
+
+        #Use authelia to authenticate
+      - "traefik.http.routers.traefik-secure.middlewares=authelia@docker"
+        #- "traefik.http.routers.traefik.middlewares=authelia@docker"
+
+        #Dashboard disabled
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "traefik.http.routers.traefik-secure.rule=Host(`example.com`) && (PathPrefix(`/traefik/api`) || PathPrefix(`/traefik/dashboard`))"
+      - "traefik.http.middlewares.traefik-stripprefix.stripprefix.prefixes=/traefik"
+      - "traefik.http.middlewares.traefik-stripprefix.stripprefix.forceSlash=false"
+      - "traefik.http.routers.traefik-secure.middlewares=authelia@docker,traefik-stripprefix"
+        #
+        #No longer needed configurations
+        #- "traefik.http.middlewares.traefik-auth.basicauth.usersfile=usersfile"
+        #- "traefik.http.routers.traefik-secure.tls=true" no longer needed, static config
+
+    authelia:
+      image: authelia/authelia:4.21.0
+      container_name: authelia
+      environment:
+        - TZ=America/Chicago
+      volumes:
+        - ./authelia:/config
+        - ./authelia/secrets:/config/secrets:ro
+      restart: unless-stopped
+      networks:
+        - t2_proxy
+      environment:
+        - AUTHELIA_JWT_SECRET_FILE=/config/secrets/jwt
+        - AUTHELIA_SESSION_SECRET_FILE=/config/secrets/session
+        - AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE=/config/secrets/email
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.authelia-https.rule=Host(`example.com`)"
+        - "traefik.http.routers.authelia-https.entrypoints=websecure"
+        - "traefik.http.routers.authelia-https.tls.certresolver=http"
+        - "traefik.http.routers.authelia-https.service=authelia"
+        - "traefik.http.services.authelia.loadbalancer.server.port=9091"

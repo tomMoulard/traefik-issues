@@ -1,0 +1,5 @@
+level=error msg="Failed to create middleware keys: middleware bar/stripprefix is not in the IngressRoute namespace default" ingress=myingressroute namespace=default providerName=kubernetescrd
+level=error msg="ServersTransport bar/mytransport is not in the IngressRoute namespace default" providerName=kubernetescrd ingress=myingressroute namespace=default
+level=error msg="TLSOption bar/mytlsoption is not in the IngressRoute namespace default" namespace=default providerName=kubernetescrd ingress=myingressroute
+
+

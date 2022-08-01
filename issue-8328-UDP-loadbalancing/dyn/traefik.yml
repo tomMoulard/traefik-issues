@@ -1,0 +1,30 @@
+# udp:
+  # routers:
+    # main:
+      # entrypoints:
+        # - udp
+      # service: app
+  # services:
+    # app:
+      # weighted:
+        # services:
+        # - name: tintin@docker
+          # weight: 0
+        # - name: tournesol@docker
+          # weight: 0
+
+tcp:
+  routers:
+    main:
+      entrypoints:
+        - tcp
+      service: tcpapp
+      rule: HostSNI(`*`)
+  services:
+    tcpapp:
+      weighted:
+        services:
+        - name: milou@docker
+          weight: 0
+        - name: hadoc@docker
+          weight: 0
