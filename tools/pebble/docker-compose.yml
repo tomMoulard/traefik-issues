@@ -1,0 +1,92 @@
+version: '3.7'
+
+# echo {} > letsencrypt/acme.json; docker-compose up --remove-orphans
+
+x-aliases: &aliases
+  aliases:
+    - whoami.localhost
+    - traefik.localhost
+
+x-pebble: &pebble
+  pebble:
+    image: letsencrypt/pebble:v2.3.0
+    command: pebble -config /pebble/config.json
+    ports:
+      - 14000:14000
+    environment:
+      # https://github.com/letsencrypt/pebble#testing-at-full-speed
+      - PEBBLE_VA_NOSLEEP=1
+      # https://github.com/letsencrypt/pebble#invalid-anti-replay-nonce-errors
+      - PEBBLE_WFE_NONCEREJECT=0
+    volumes:
+      - ./pebble:/pebble
+
+x-pebble-traefik: &pebble-traefik
+  # touch letsencrypt/acme.json
+  # chmod 0600 letsencrypt/acme.json
+  depends_on:
+    - pebble
+  environment:
+    - LEGO_CA_CERTIFICATES=/pebble/pebble.minica.pem
+    - LEGO_CA_SERVER_NAME=pebble
+  networks:
+    default:
+      <<: *aliases
+  # volumes:
+  #   - ./letsencrypt/:/letsencrypt
+  #   - ./pebble/:/pebble # pebble certificates
+  # command:
+  #   - --entrypoints.websecure.http.tls.certResolver=leresolver
+  #   - --certificatesresolvers.leresolver.acme.caserver=https://pebble:14000/dir
+  #   - --certificatesresolvers.leresolver.acme.email=your@email.com
+  #   - --certificatesresolvers.leresolver.acme.storage=/letsencrypt/acme.json
+  #   - --certificatesresolvers.leresolver.acme.tlsChallenge=true
+
+services:
+  <<: *pebble
+
+  traefik:
+    <<: *pebble-traefik
+    image: traefik:v2.8
+    command:
+      - --api
+      - --log.level=DEBUG
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certResolver=leresolver
+      - --certificatesresolvers.leresolver.acme.caserver=https://pebble:14000/dir
+      - --certificatesresolvers.leresolver.acme.email=your@email.com
+      - --certificatesresolvers.leresolver.acme.httpChallenge.entrypoint=web
+#      - --certificatesresolvers.leresolver.acme.tlsChallenge=true
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./pebble/:/pebble # pebble certificates
+    labels:
+      traefik.enable: 'true'
+
+      # Dashboard
+      traefik.http.routers.traefik.rule: Host(`traefik.localhost`)
+      traefik.http.routers.traefik.entrypoints: websecure
+      traefik.http.routers.traefik.service: api@internal
+
+  whoami:
+    image: traefik/whoami:v1.6.0
+    # command:
+    #   # It tells whoami to start listening on 2001 instead of 80
+    #   - --port=2001
+    #   - --name 🧀
+    labels:
+      traefik.enable: 'true'
+
+      traefik.http.routers.app.rule: Host(`whoami.localhost`)
+      traefik.http.routers.app.entrypoints: websecure
+      # traefik.http.routers.app.middlewares: auth
+
+      traefik.http.middlewares.auth.basicauth.users: user:$$apr1$$q8eZFHjF$$Fvmkk//V6Btlaf2i/ju5n/ # user/password

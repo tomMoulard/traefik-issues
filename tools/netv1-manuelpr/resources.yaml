@@ -1,0 +1,105 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: whoami
+#  labels:
+#    app: whoami
+spec:
+  selector:
+    matchLabels:
+      app: whoami
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: whoami
+    spec:
+      containers:
+        - name: whoami
+          image: traefik/whoami:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      name: whoami
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: whoami
+
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: extensionsv1beta1
+
+spec:
+  ingressClassName: networkingv1beta1
+  rules:
+    - host: whoami.localhost
+      http:
+        paths:
+          - path: /extv1beta1
+            pathType: Prefix
+            backend:
+              serviceName: whoami
+              servicePort: 80
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: IngressClass
+metadata:
+  name: networkingv1beta1
+spec:
+  controller: traefik.io/ingress-controller
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  name: networkingv1beta1
+
+spec:
+  ingressClassName: networkingv1beta1
+  rules:
+    - host: whoami.localhost
+      http:
+        paths:
+          - path: /netv1beta1
+            backend:
+              serviceName: whoami
+              servicePort: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: networkingv1
+spec:
+  controller: traefik.io/ingress-controller
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: networkingv1
+
+spec:
+  ingressClassName: networkingv1
+  rules:
+    - host: whoami.localhost
+      http:
+        paths:
+          - path: /netv1
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80
