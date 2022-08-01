@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:v2.6
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+      # - --entrypoints.web.address=:80
+
+      - --experimental.hub
+      - --entrypoints.hub-ep.address=:9900 # useless
+      - --hub.entrypoint=hub-ep
+      - --metrics.prometheus
+      - --hub.tls.insecure=true
+      # - --hub.tls.ca=/certs/rootCA.pem
+      # - --hub.tls.cert=/certs/proxy.traefik-client.pem
+      # - --hub.tls.key=/certs/proxy.traefik-client-key.pem
+    ports:
+      - "80:80"
+      - "9900:9900"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs:/certs
+    tty: true
+
+  hub-agent:
+    image: ghcr.io/traefik/hub-agent-traefik:bfc89ea
+    # restart: "on-failure"
+    # networks:
+      # - traefik
+    command:
+      - run
+      - --hub.url=https://platform-preview.hub.traefik.io/agent
+      - --hub.token=1258cc46-114e-4ab6-b7be-93e968fe83aa
+      - --traefik.addr=https://192.168.1.71:9900
+      - --traefik.tls.insecure
+      - --auth-server.acp-dir=/acps
+      # - --traefik.tls.ca=/certs/rootCA.pem
+      # - --traefik.tls.cert=/certs/agent.traefik-client.pem
+      # - --traefik.tls.key=/certs/agent.traefik-client-key.pem
+      # - --auth-server.listen-addr="0.0.0.0:6548"
+    volumes:
+      - ./hub-agent:/acps
+      - ./certs:/certs
+    # depends_on:
+      # - traefik
+
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      traefik.http.routers.whoami.middlewares: jwt@hub

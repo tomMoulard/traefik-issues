@@ -1,0 +1,36 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:2.4.1"
+    command:
+      # - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  whoami:
+    image: "containous/whoami"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`pilot.traefik.io.localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+  # app:
+    # image: "tommoulard/app"
+    # build: .
+    # ports:
+      # - "8000:80"
+    # labels:
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.whoami.rule=Host(`app.localhost`)"
+      # - "traefik.http.routers.whoami.entrypoints=web"
+      # # - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=2000000"

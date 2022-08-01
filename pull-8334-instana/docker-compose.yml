@@ -1,0 +1,47 @@
+version: '3.6'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:2.5
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+
+      - --tracing.instana=true
+      - --tracing.instana.localAgentHost=instana
+      - --tracing.instana.logLevel=debug
+      - --tracing.instana.enableProfiling=true
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+
+  whoami:
+    # image: traefik/whoamitcp
+    image: traefik/whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+
+  instana:
+    image: instana/agent
+    pid: "host"
+    privileged: true
+    ports:
+      - "8081:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev:/dev
+      - /sys:/sys
+      - /var/log:/var/log
+    environment:
+      - INSTANA_AGENT_ENDPOINT=ingress-green-saas.instana.io
+      - INSTANA_AGENT_ENDPOINT_PORT=${agent_endpoint_port:-443}
+      - INSTANA_DOWNLOAD_KEY=${download_key}
+      - INSTANA_AGENT_KEY=J4UiSx8STZWkzCZ0nYO_Og
+      - INSTANA_AGENT_ZONE=${agent_zone:-nginx-tracing-demo}
+    labels:
+      traefik.http.routers.instana.rule: Host(`instana.localhost`)

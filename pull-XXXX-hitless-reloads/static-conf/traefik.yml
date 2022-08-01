@@ -1,0 +1,29 @@
+entryPoints:
+  web:
+    address: :8000
+
+providers:
+  file:
+    # directory: /home/tm/workspace/traefik/pull-XXXX-hitless-reloads/dyn-conf/1
+    directory: /home/tm/workspace/traefik/pull-XXXX-hitless-reloads/dyn-conf/2
+
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+log:
+  level: DEBUG
+
+api:
+  debug: true
+
+pilot:
+  token: a3099e99-2aa3-4100-b2b0-ef2ebb92b079
+
+
+# --api.insecure=true
+# --providers.file.directory=/home/tm/workspace/traefik/pull-XXXX-hitless-reloads/dyn-conf
+# --log.level=DEBUG
+# --api.debug=true
+# --entryPoints.web.address=:8000
+# --pilot.token=a3099e99-2aa3-4100-b2b0-ef2ebb92b079

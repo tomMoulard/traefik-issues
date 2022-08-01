@@ -1,0 +1,47 @@
+version: '3.6'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:2.6
+    tty: true
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--providers.file.directory=/dyn'
+      - '--log.level=DEBUG'
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/dyn/traefik.yml
+
+  whoami-lb1:
+    image: traefik/whoami
+    command: -name tintin
+    labels:
+      traefik.http.services.whoami1.loadbalancer.server.port: 80
+      traefik.http.services.whoami1.loadbalancer.healthcheck.path: /health
+      traefik.http.services.whoami1.loadbalancer.healthcheck.port: 80
+  whoami-lb2:
+    image: traefik/whoami
+    command: -name milou
+    labels:
+      traefik.http.services.whoami2.loadbalancer.server.port: 80
+      traefik.http.services.whoami2.loadbalancer.healthcheck.path: /health
+      traefik.http.services.whoami2.loadbalancer.healthcheck.port: 80
+  whoami-lb3:
+    image: traefik/whoami
+    command: -name hadoc
+    labels:
+      traefik.http.services.whoami3.loadbalancer.server.port: 80
+      traefik.http.services.whoami3.loadbalancer.healthcheck.path: /health
+      traefik.http.services.whoami3.loadbalancer.healthcheck.port: 80
+  whoami-lb4:
+    image: traefik/whoami
+    command: -name tournesol
+    labels:
+      traefik.http.services.whoami4.loadbalancer.server.port: 80
+      traefik.http.services.whoami4.loadbalancer.healthcheck.path: /health
+      traefik.http.services.whoami4.loadbalancer.healthcheck.port: 80

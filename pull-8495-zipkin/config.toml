@@ -1,0 +1,21 @@
+defaultEntryPoints = ["http"]
+
+logLevel = "DEBUG"
+debug = true
+
+[api]
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+
+[tracing]
+  backend = "traefik"
+  servicename = "tracing"
+    [tracing.zipkin]
+      httpEndpoint = "http://zipkin:9411/api/v2/spans"
+      # httpEndpoint = "http://zipkin:9411/api/v1/spans"
+      debug = true
+[docker]
+[retry]
+  attempts = 3

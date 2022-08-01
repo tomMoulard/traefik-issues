@@ -1,0 +1,35 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik:2.5
+    image: traefik/traefik:latest
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+      # - '--entrypoints.web.http.middlewares=errorpage@docker'
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+    labels:
+      - "traefik.http.middlewares.errorpage.errors.status=100-599"
+      # - "traefik.http.middlewares.errorpage.errors.service=whoami-pull-8460-error-middleware@docker"
+      - "traefik.http.middlewares.errorpage.errors.service=whoami@docker"
+      - "traefik.http.middlewares.errorpage.errors.query=/{status}.html"
+  whoami:
+    image: traefik/whoami
+    labels:
+      # - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`) && PathPrefix(`/whoami`)"
+      - "traefik.http.services.whoami.loadbalancer.passHostHeader=false"
+  whoami2:
+    image: traefik/whoami
+    labels:
+      # - "traefik.http.routers.whoami2.rule=Host(`whoami2.localhost`)"
+      - "traefik.http.routers.whoami2.rule=Host(`whoami2.localhost`) && PathPrefix(`/whoami2`)"
+      - "traefik.http.routers.whoami2.middlewares=errorpage@docker"
+      - "traefik.http.services.whoami2.loadbalancer.passHostHeader=false"

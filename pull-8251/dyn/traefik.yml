@@ -1,0 +1,12 @@
+http:
+  routers:
+    api:
+      service: whoami-pull-8251@docker
+      rule: Host(`api.localhost`) && PathPrefix(`/api/`)
+      middlewares:
+      - replace-path
+  middlewares:
+    replace-path:
+      replacePathRegex:
+        regex: "^/api/(.*)"
+        replacement: "/$1"

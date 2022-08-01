@@ -1,0 +1,22 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.5
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    labels:
+      traefik.http.routers.whoami.rule: HostRegexp(`{toto:[a-z]+}.{toto:[a-z]+}.localhost`)

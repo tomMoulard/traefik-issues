@@ -1,0 +1,8 @@
+{{ range $i, $e := until 100000 }}
+    [http.routers.router-{{ $e }}]
+        rule = "PathPrefix(`/path/{{ $e }}`)"
+        service = "service-{{ $e }}"
+    [http.services.service-{{ $e }}]
+        [[http.services.service-{{ $e }}.loadBalancer.servers]]
+            url = "http://localhost:{{ $e }}"
+{{ end }}

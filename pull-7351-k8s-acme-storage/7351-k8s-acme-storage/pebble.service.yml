@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pebble
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2021-09-22T15:21:32Z"
+  labels:
+    app.kubernetes.io/instance: pebble
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: pebble
+    app.kubernetes.io/version: v2.3.0
+    helm.sh/chart: pebble-0.2.2
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:meta.helm.sh/release-name: {}
+          f:meta.helm.sh/release-namespace: {}
+        f:labels:
+          .: {}
+          f:app.kubernetes.io/instance: {}
+          f:app.kubernetes.io/managed-by: {}
+          f:app.kubernetes.io/name: {}
+          f:app.kubernetes.io/version: {}
+          f:helm.sh/chart: {}
+      f:spec:
+        f:externalTrafficPolicy: {}
+        f:ports:
+          .: {}
+          k:{"port":443,"protocol":"TCP"}:
+            .: {}
+            f:name: {}
+            f:nodePort: {}
+            f:port: {}
+            f:protocol: {}
+            f:targetPort: {}
+          k:{"port":8444,"protocol":"TCP"}:
+            .: {}
+            f:name: {}
+            f:nodePort: {}
+            f:port: {}
+            f:protocol: {}
+            f:targetPort: {}
+        f:selector:
+          .: {}
+          f:app.kubernetes.io/instance: {}
+          f:app.kubernetes.io/name: {}
+        f:sessionAffinity: {}
+        f:type: {}
+    manager: helm
+    operation: Update
+    time: "2021-09-22T15:21:32Z"
+  name: pebble
+  namespace: default
+  resourceVersion: "482"
+  uid: 737c4c58-f2e3-4131-bece-6b096b9ffbb8
+spec:
+  clusterIP: 10.43.138.101
+  clusterIPs:
+  - 10.43.138.101
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: acme
+    nodePort: 32443
+    port: 443
+    protocol: TCP
+    targetPort: acme
+  - name: acme-mgmt
+    nodePort: 32444
+    port: 8444
+    protocol: TCP
+    targetPort: acme-mgmt
+  selector:
+    app.kubernetes.io/instance: pebble
+    app.kubernetes.io/name: pebble
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

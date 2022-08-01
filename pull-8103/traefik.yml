@@ -1,0 +1,36 @@
+http:
+  routers:
+    Router0:
+      entryPoints:
+      - web
+      service: wrr1
+      rule: Host(`whoami.localhost`) && PathPrefix(`/`)
+  services:
+    wrr1:
+      weighted:
+        sticky:
+          cookie:
+            name: lvl1
+        services:
+          - name: whoami1
+            weight: 1
+          - name: whoami2
+            weight: 1
+
+    whoami1:
+      loadBalancer:
+        sticky:
+          cookie:
+            name: lvl2
+        servers:
+          - url: http://127.0.0.1:8081
+          - url: http://127.0.0.1:8082
+
+    whoami2:
+      loadBalancer:
+        sticky:
+          cookie:
+            name: lvl2
+        servers:
+          - url: http://127.0.0.1:8083
+          - url: http://127.0.0.1:8084

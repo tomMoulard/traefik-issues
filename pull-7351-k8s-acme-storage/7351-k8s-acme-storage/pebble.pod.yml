@@ -1,0 +1,355 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    checksum/configmap: 3a146efd1ddbfb6956b4f1e2f26f3b258e556141523f5927bff9392ebd271419
+  creationTimestamp: "2021-09-22T15:21:32Z"
+  generateName: pebble-5cc867466c-
+  labels:
+    app.kubernetes.io/instance: pebble
+    app.kubernetes.io/name: pebble
+    pod-template-hash: 5cc867466c
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:checksum/configmap: {}
+        f:generateName: {}
+        f:labels:
+          .: {}
+          f:app.kubernetes.io/instance: {}
+          f:app.kubernetes.io/name: {}
+          f:pod-template-hash: {}
+        f:ownerReferences:
+          .: {}
+          k:{"uid":"88319324-afdb-4de0-9e11-b301c85a091f"}:
+            .: {}
+            f:apiVersion: {}
+            f:blockOwnerDeletion: {}
+            f:controller: {}
+            f:kind: {}
+            f:name: {}
+            f:uid: {}
+      f:spec:
+        f:containers:
+          k:{"name":"pebble"}:
+            .: {}
+            f:command: {}
+            f:env:
+              .: {}
+              k:{"name":"PEBBLE_AUTHZREUSE"}:
+                .: {}
+                f:name: {}
+                f:value: {}
+              k:{"name":"PEBBLE_VA_NOSLEEP"}:
+                .: {}
+                f:name: {}
+                f:value: {}
+              k:{"name":"PEBBLE_WFE_NONCEREJECT"}:
+                .: {}
+                f:name: {}
+                f:value: {}
+              k:{"name":"POD_NAMESPACE"}:
+                .: {}
+                f:name: {}
+                f:valueFrom:
+                  .: {}
+                  f:fieldRef:
+                    .: {}
+                    f:apiVersion: {}
+                    f:fieldPath: {}
+            f:image: {}
+            f:imagePullPolicy: {}
+            f:name: {}
+            f:ports:
+              .: {}
+              k:{"containerPort":8443,"protocol":"TCP"}:
+                .: {}
+                f:containerPort: {}
+                f:name: {}
+                f:protocol: {}
+              k:{"containerPort":8444,"protocol":"TCP"}:
+                .: {}
+                f:containerPort: {}
+                f:name: {}
+                f:protocol: {}
+            f:readinessProbe:
+              .: {}
+              f:exec:
+                .: {}
+                f:command: {}
+              f:failureThreshold: {}
+              f:periodSeconds: {}
+              f:successThreshold: {}
+              f:timeoutSeconds: {}
+            f:resources: {}
+            f:terminationMessagePath: {}
+            f:terminationMessagePolicy: {}
+            f:volumeMounts:
+              .: {}
+              k:{"mountPath":"/etc/pebble/pebble-config.json"}:
+                .: {}
+                f:mountPath: {}
+                f:name: {}
+                f:subPath: {}
+              k:{"mountPath":"/etc/pebble/temp-tls-leaf"}:
+                .: {}
+                f:mountPath: {}
+                f:name: {}
+        f:dnsPolicy: {}
+        f:enableServiceLinks: {}
+        f:initContainers:
+          .: {}
+          k:{"name":"pebble-tls-leaf-creation"}:
+            .: {}
+            f:command: {}
+            f:image: {}
+            f:imagePullPolicy: {}
+            f:name: {}
+            f:resources: {}
+            f:terminationMessagePath: {}
+            f:terminationMessagePolicy: {}
+            f:volumeMounts:
+              .: {}
+              k:{"mountPath":"/input"}:
+                .: {}
+                f:mountPath: {}
+                f:name: {}
+              k:{"mountPath":"/output/localhost"}:
+                .: {}
+                f:mountPath: {}
+                f:name: {}
+        f:restartPolicy: {}
+        f:schedulerName: {}
+        f:securityContext: {}
+        f:terminationGracePeriodSeconds: {}
+        f:volumes:
+          .: {}
+          k:{"name":"pebble-config-and-tls-root"}:
+            .: {}
+            f:configMap:
+              .: {}
+              f:defaultMode: {}
+              f:name: {}
+            f:name: {}
+          k:{"name":"pebble-temp-tls-leaf"}:
+            .: {}
+            f:emptyDir: {}
+            f:name: {}
+      f:status:
+        f:conditions:
+          k:{"type":"ContainersReady"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Initialized"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Ready"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+        f:containerStatuses: {}
+        f:hostIP: {}
+        f:initContainerStatuses: {}
+        f:phase: {}
+        f:podIP: {}
+        f:podIPs:
+          .: {}
+          k:{"ip":"10.42.0.5"}:
+            .: {}
+            f:ip: {}
+        f:startTime: {}
+    manager: k3s
+    operation: Update
+    time: "2021-09-22T15:21:42Z"
+  name: pebble-5cc867466c-48q8r
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: pebble-5cc867466c
+    uid: 88319324-afdb-4de0-9e11-b301c85a091f
+  resourceVersion: "579"
+  uid: f74d9a4f-29f4-46ee-903c-fcfffaa1d6fe
+spec:
+  containers:
+  - command:
+    - pebble
+    - -config
+    - /etc/pebble/pebble-config.json
+    - -dnsserver
+    - $(PEBBLE_COREDNS_SERVICE_HOST):53
+    env:
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
+    - name: PEBBLE_VA_NOSLEEP
+      value: "1"
+    - name: PEBBLE_WFE_NONCEREJECT
+      value: "0"
+    - name: PEBBLE_AUTHZREUSE
+      value: "100"
+    image: letsencrypt/pebble:v2.3.0
+    imagePullPolicy: IfNotPresent
+    name: pebble
+    ports:
+    - containerPort: 8443
+      name: acme
+      protocol: TCP
+    - containerPort: 8444
+      name: acme-mgmt
+      protocol: TCP
+    readinessProbe:
+      exec:
+        command:
+        - sh
+        - -c
+        - '[ "$(netstat -tl | grep 8443)" != "" ] || exit 1'
+      failureThreshold: 3
+      periodSeconds: 2
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/pebble/pebble-config.json
+      name: pebble-config-and-tls-root
+      subPath: pebble-config.json
+    - mountPath: /etc/pebble/temp-tls-leaf
+      name: pebble-temp-tls-leaf
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-g9wxs
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  initContainers:
+  - command:
+    - sh
+    - -c
+    - |
+      [ -e localhost/key.pem ] || exec minica -ca-cert /input/root-cert.pem -ca-key /input/root-key.pem -domains "localhost,pebble,pebble.default,pebble.default.svc,pebble.default.svc.cluster.local" -ip-addresses 127.0.0.1
+    image: twalter/minica:latest
+    imagePullPolicy: Always
+    name: pebble-tls-leaf-creation
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /input
+      name: pebble-config-and-tls-root
+    - mountPath: /output/localhost
+      name: pebble-temp-tls-leaf
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-g9wxs
+      readOnly: true
+  nodeName: k3d-mycluster-server-0
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 1
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: pebble
+    name: pebble-config-and-tls-root
+  - emptyDir: {}
+    name: pebble-temp-tls-leaf
+  - name: kube-api-access-g9wxs
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2021-09-22T15:21:38Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2021-09-22T15:21:42Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2021-09-22T15:21:42Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2021-09-22T15:21:32Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://f6995d632826ba98ba92d8c3c96dfd48dace86bb46241ef55368d0541afe4dca
+    image: docker.io/letsencrypt/pebble:v2.3.0
+    imageID: docker.io/letsencrypt/pebble@sha256:b13fa504aceaa1d3264aab75756c22649f0ea66cec0bce656693f6db06273465
+    lastState: {}
+    name: pebble
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2021-09-22T15:21:41Z"
+  hostIP: 172.24.0.2
+  initContainerStatuses:
+  - containerID: containerd://1b005bc95bf01ca3177543dbbf770019df82765150933d51b2cbe05760f0dce7
+    image: docker.io/twalter/minica:latest
+    imageID: docker.io/twalter/minica@sha256:3c33ecad86f04fb466ee9dfb2a08f15f7f8cc8f6268304137ebd39eac2218aca
+    lastState: {}
+    name: pebble-tls-leaf-creation
+    ready: true
+    restartCount: 0
+    state:
+      terminated:
+        containerID: containerd://1b005bc95bf01ca3177543dbbf770019df82765150933d51b2cbe05760f0dce7
+        exitCode: 0
+        finishedAt: "2021-09-22T15:21:37Z"
+        reason: Completed
+        startedAt: "2021-09-22T15:21:36Z"
+  phase: Running
+  podIP: 10.42.0.5
+  podIPs:
+  - ip: 10.42.0.5
+  qosClass: BestEffort
+  startTime: "2021-09-22T15:21:32Z"

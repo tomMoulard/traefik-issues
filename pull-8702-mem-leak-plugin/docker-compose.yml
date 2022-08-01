@@ -1,0 +1,65 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:v2.6
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+      - --metrics.prometheus
+      - --pilot.token=a3099e99-2aa3-4100-b2b0-ef2ebb92b079
+      - --experimental.plugins.log4shell.modulename=github.com/traefik/plugin-log4shell
+      - --experimental.plugins.log4shell.version=v0.1.2
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+  whoami:
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      traefik.http.routers.whoami.middlewares: log4shell
+      traefik.http.middlewares.log4shell.plugin.log4shell.errorCode: 200
+
+  grafana:
+    image: grafana/grafana:7.2.2
+    volumes:
+      - ./grafana:/var/lib/grafana
+    user: 1000:1000
+    restart: always
+    depends_on:
+      - prometheus
+    environment:
+      GF_METRICS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_BASIC_ENABLED: false
+      GF_AUTH_DISABLE_LOGIN_FORM: true
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    labels:
+      traefik.http.routers.grafana.rule: Host(`grafana.localhost`)
+    # ports:
+      # - "3000:3000"
+
+  prometheus:
+    image: prom/prometheus:v2.22.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+    user: 1000:1000
+    restart: always
+    volumes:
+      - ./prometheus/data:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    labels:
+      traefik.http.routers.prometheus.rule: Host(`prometheus.localhost`)
+    # ports:
+      # - "9090:9090"

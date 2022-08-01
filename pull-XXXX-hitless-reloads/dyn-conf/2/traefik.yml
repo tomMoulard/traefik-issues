@@ -1,0 +1,12 @@
+http:
+  routers:
+    Router0:
+      entryPoints:
+      - web
+      service: whoami
+      rule: PathPrefix(`/tata`)
+  services:
+    whoami:
+      loadBalancer:
+        servers:
+          - url: http://localhost:5000

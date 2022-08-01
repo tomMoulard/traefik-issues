@@ -1,0 +1,25 @@
+entryPoints:
+  web:
+    address: :80
+
+api:
+  insecure: true
+
+log:
+  level: DEBUG
+
+providers:
+  plugin:
+    demo:
+      pollInterval: 2s
+  docker: {}
+  file:
+    directory: /traefik.d
+    watch: true
+
+experimental:
+  localPlugins:
+    example:
+      moduleName: github.com/traefik/plugindemo
+    demo:
+      moduleName: github.com/traefik/pluginproviderdemo

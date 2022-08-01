@@ -1,0 +1,163 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: supersecret
+  namespace: default
+
+stringData:
+  tls.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIID+TCCAmGgAwIBAgIRAN61R24PQhzn4vUAYRsU7Z8wDQYJKoZIhvcNAQELBQAw
+    UzEeMBwGA1UEChMVbWtjZXJ0IGRldmVsb3BtZW50IENBMRQwEgYDVQQLDAt0bUBU
+    cmFlZmlrMzEbMBkGA1UEAwwSbWtjZXJ0IHRtQFRyYWVmaWszMB4XDTIxMTAyNjA4
+    MjExMVoXDTI0MDEyNjA5MjExMVowPzEnMCUGA1UEChMebWtjZXJ0IGRldmVsb3Bt
+    ZW50IGNlcnRpZmljYXRlMRQwEgYDVQQLDAt0bUBUcmFlZmlrMzCCASIwDQYJKoZI
+    hvcNAQEBBQADggEPADCCAQoCggEBAMnjCrvzpjb2arZiYdlU8ZDZDHcUjKmS0mea
+    zoF7Rh2yJsuowO3tzskicOMcJWOW/wF/SXB+EIPf3y5Dmlzaw19IfuuZF/8cgq5x
+    /WuR9bHZMLoOdGm9DQEmxvRx7N9imVHCZgWA2GkxFGevnkaBEYHGrbZCpx6Em+rb
+    M9IRYyT+GHLCYmhRDigpSYElizWwoqh+adCicQZ+vkH7Azd+Y8lbitA3EcTF1+kM
+    af4Fe/FayEDMShuwAdgBi13uOzQGwxbkVLKrQwqN2CvQ2s2b48PinEE/lGJnnSPi
+    RaCvVWQhstoq10LL3GoavGRVEQrp0n5jN5fXobQz/Wq+/wGEhdECAwEAAaNcMFow
+    DgYDVR0PAQH/BAQDAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMBMB8GA1UdIwQYMBaA
+    FC55KPe3CFQLQ7HrHxTvAZMoXjxhMBIGA1UdEQQLMAmCB2Zvby5jb20wDQYJKoZI
+    hvcNAQELBQADggGBADiu3HjkjtEFsDxE8qriN+fiBsR/3VH1RvGvGZgEINwUin/c
+    hPVh6NnGuAn3ltVO+5m2rDWxQekrIATjsyOL9j+zgrzREx0dG2PUK56IeDP8/GxW
+    0gdrUi5rA9LFJJyYNw8RE9uGFzl8Ym8rTKRf9fVQyji7zgQeixwu+B7MIoh6wTVg
+    QVCMlX6C/jnSwby1wH2RQRWxUPm57D9ecMufEwKNtxNi65rD7b9/glOL8W7mGl15
+    uBHyDzvt3MD3zTrjMNRD4r5X/zeyUm2nDpC0eqdJ+XnDWirwxN/M1VIxw3xZYHnS
+    TF3y9/Ms5GEjHsjyMuSoS9mChzYmPHLh5zZMc4cdSf2/fNXYdGObwjt5oRn3crPN
+    A5OAXcPwTdD7pO+iDcEr4gdSkuoXjBzbuYOVSYNT57cn7AAzZnTJKpZ+XxW7hIQZ
+    wifgXYT3N2NFTRBbAfX9LVcW8XfkAJlD46ixLAj1WTFXvoxcvVYVXr3RIcjxjM38
+    Svk88VowVtodashPgg==
+    -----END CERTIFICATE-----
+  tls.key: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDJ4wq786Y29mq2
+    YmHZVPGQ2Qx3FIypktJnms6Be0YdsibLqMDt7c7JInDjHCVjlv8Bf0lwfhCD398u
+    Q5pc2sNfSH7rmRf/HIKucf1rkfWx2TC6DnRpvQ0BJsb0cezfYplRwmYFgNhpMRRn
+    r55GgRGBxq22QqcehJvq2zPSEWMk/hhywmJoUQ4oKUmBJYs1sKKofmnQonEGfr5B
+    +wM3fmPJW4rQNxHExdfpDGn+BXvxWshAzEobsAHYAYtd7js0BsMW5FSyq0MKjdgr
+    0NrNm+PD4pxBP5RiZ50j4kWgr1VkIbLaKtdCy9xqGrxkVREK6dJ+YzeX16G0M/1q
+    vv8BhIXRAgMBAAECggEBAKvOR2hDpQPJGG81skedfiXiUDVWi44ToHMCzxJpsfW7
+    kkBm0Ciq4/tPD/p2DWt/KGxBwmG1JqDTd76LUWYL1Y/Uxg4BLuavgJar8xoEEK7V
+    Qh5UBsWlWNfOBCoqeYZxBkEJyoCMcZ6zYcYLMgqV9CwYw+QDPO0/tOBcwvDWUyU6
+    hOZKVjyfUUkURzGMLo3v8rn/7RZnBeBPHCxgNyY/Y3MJSpcwsZpbL7D5E0eEKmGu
+    JX3E0jgl0c0GlcnWFiJWy5ULiKCTo4LuTzJbYG3V5/ifW67+itwtTKD/IqFaLyVg
+    Oj3XJi+4ux2bTgsf1ueRbvRwfYKgAqpRLBVvep6YYkECgYEA5cSAbGS82jalIwjd
+    7mgjveRDHvN/7emNRAsf4NAt+/alBbYHxBrumkNqpMTU+6i6hS6tULM+XcmJCiRW
+    yKWU/SwKSXExRkl57MboqicgyPN8QXaXg4h2aGi/WweyrPfAq7ttsJQXgMJ7qjDl
+    /zxfSTHE5eWx4xcmzzw/wLUK6pUCgYEA4O+pQSsL+lOSgcSgHAf/pLwRQEu83gmD
+    bCu/AiIHRJ1tcBPMcmzqyQn35fBki1i5yW7eEe7hCxBllKFKxjkeezDmpmICkggI
+    XGsLwoTHWPPgFUlVYVASnksL/GL8LaFs30AAbHnLbJKITkPlAgT/KzYvOrZv0rnS
+    tat/Qu81W00CgYEAspd2KspycDqhSQYPWsvfXC4cbeZevZIXl5f+A0RNOdeQlUvT
+    5X35kDZuofvMgH+52uNZG6z3APcxaYytV/A8Sjz9EfDFmBhsiLpjBj67oPaA0nFX
+    e4mKX8VrV1o4a3F3dQSOUf4J9q80aCjx3N4UQlRI81kCV70bEWGHPEZ8YbECgYAa
+    03pUE1YyXJU0dMbDkRCkDOnhySaVNH1AAVeeYYCMZloO682ON/8oStAN1EWpeMNv
+    ipFhgiPEtgfnWfUY/ubrukFHxpiX4e1dWEbmw/8iVLN81mogWPRffIPJbeS1bHMX
+    jQJ/7WadZDxtWRuOyhnEhYnMbsWXVCIVGIbs7KpoYQKBgAMGFT2OYmH10hnST+cU
+    HPJPxUwWjhWvlHdT0B3EsPzaa/SZD6LXRzqh9t9Dak5cOoTmUfIkhuvNtTsMl4QH
+    es+hg3IPwOjB7aa5NZQ4nWEoPH6ny6sph6vYcuG5DfX3+t9n1JOPLMGWVtTMDDMr
+    gsJUhT+CL0QZFofn11vwTpSF
+    -----END PRIVATE KEY-----
+
+---
+kind: GatewayClass
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: my-gateway-class
+spec:
+  controllerName: traefik.io/gateway-controller
+
+---
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: my-gateway
+  namespace: default
+spec:
+  gatewayClassName: my-gateway-class
+  listeners: # Use GatewayClass defaults for listener definition.
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: supersecret
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: tls-pass
+      protocol: TLS
+      port: 8000
+      tls:
+        mode: Passthrough
+      allowedRoutes:
+        kinds:
+          - kind: TLSRoute
+    - name: tls-term
+      protocol: TLS
+      port: 8443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: supersecret
+      allowedRoutes:
+        kinds:
+          - kind: TCPRoute
+        namespaces:
+          from: All
+
+---
+kind: TCPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: tcp-app-term
+  namespace: default
+spec:
+  parentRefs:
+    - name: my-gateway
+      sectionName: tls-term
+  rules:
+    - backendRefs:
+        - name: whoamitcp
+          port: 8080
+
+---
+kind: TLSRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: tls-app-pass
+  namespace: default
+spec:
+  parentRefs:
+    - name: my-gateway
+      sectionName: tls-pass
+  rules:
+    - backendRefs:
+        - name: whoami
+          port: 80
+
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: http-app-1
+  namespace: default
+spec:
+  parentRefs:
+    - name: my-gateway
+  hostnames:
+    - "foo.com"
+  rules:
+    - matches:
+        - path:
+            value: /dashboard
+        - path:
+            value: /api
+      backendRefs:
+        - name: api@internal
+          kind: TraefikService
+          group: traefik.containo.us

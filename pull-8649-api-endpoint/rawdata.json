@@ -1,0 +1,161 @@
+{
+    "routers": {
+        "api@internal": {
+            "entryPoints": [
+                "traefik"
+            ],
+            "service": "api@internal",
+            "rule": "PathPrefix(`/api`)",
+            "priority": 2147483646,
+            "status": "enabled",
+            "using": [
+                "traefik"
+            ]
+        },
+        "dashboard@internal": {
+            "entryPoints": [
+                "traefik"
+            ],
+            "middlewares": [
+                "dashboard_redirect@internal",
+                "dashboard_stripprefix@internal"
+            ],
+            "service": "dashboard@internal",
+            "rule": "PathPrefix(`/`)",
+            "priority": 2147483645,
+            "status": "enabled",
+            "using": [
+                "traefik"
+            ]
+        },
+        "traefik-pull-8649-api-endpoint@docker": {
+            "entryPoints": [
+                "http"
+            ],
+            "service": "traefik-pull-8649-api-endpoint",
+            "rule": "Host(`traefik-pull-8649-api-endpoint`)",
+            "status": "enabled",
+            "using": [
+                "http"
+            ]
+        },
+        "whoami-tcp@docker": {
+            "entryPoints": [
+                "http"
+            ],
+            "service": "whoami-tcp-pull-8649-api-endpoint",
+            "rule": "HostSNI(`*`)",
+            "error": [
+                "error while parsing rule HostSNI(`*`): unsupported function: HostSNI"
+            ],
+            "status": "disabled",
+            "using": [
+                "http"
+            ]
+        },
+        "whoami@docker": {
+            "entryPoints": [
+                "http"
+            ],
+            "service": "whoami-pull-8649-api-endpoint",
+            "rule": "Host(`whoami.localhost`)",
+            "status": "enabled",
+            "using": [
+                "http"
+            ]
+        }
+    },
+    "middlewares": {
+        "dashboard_redirect@internal": {
+            "redirectRegex": {
+                "regex": "^(http:\\/\\/(\\[[\\w:.]+\\]|[\\w\\._-]+)(:\\d+)?)\\/$",
+                "replacement": "${1}/dashboard/",
+                "permanent": true
+            },
+            "status": "enabled",
+            "usedBy": [
+                "dashboard@internal"
+            ]
+        },
+        "dashboard_stripprefix@internal": {
+            "stripPrefix": {
+                "prefixes": [
+                    "/dashboard/",
+                    "/dashboard"
+                ]
+            },
+            "status": "enabled",
+            "usedBy": [
+                "dashboard@internal"
+            ]
+        }
+    },
+    "services": {
+        "api@internal": {
+            "status": "enabled",
+            "usedBy": [
+                "api@internal"
+            ]
+        },
+        "dashboard@internal": {
+            "status": "enabled",
+            "usedBy": [
+                "dashboard@internal"
+            ]
+        },
+        "noop@internal": {
+            "status": "enabled"
+        },
+        "traefik-pull-8649-api-endpoint@docker": {
+            "loadBalancer": {
+                "servers": [
+                    {
+                        "url": "http://172.18.0.3:80"
+                    }
+                ],
+                "passHostHeader": true
+            },
+            "status": "enabled",
+            "usedBy": [
+                "traefik-pull-8649-api-endpoint@docker"
+            ],
+            "serverStatus": {
+                "http://172.18.0.3:80": "UP"
+            }
+        },
+        "whoami-pull-8649-api-endpoint@docker": {
+            "loadBalancer": {
+                "servers": [
+                    {
+                        "url": "http://172.18.0.4:80"
+                    }
+                ],
+                "passHostHeader": true
+            },
+            "status": "enabled",
+            "usedBy": [
+                "whoami@docker"
+            ],
+            "serverStatus": {
+                "http://172.18.0.4:80": "UP"
+            }
+        },
+        "whoami-tcp-pull-8649-api-endpoint@docker": {
+            "loadBalancer": {
+                "servers": [
+                    {
+                        "url": "http://172.18.0.2:8080"
+                    }
+                ],
+                "passHostHeader": true
+            },
+            "status": "enabled",
+            "usedBy": [
+                "whoami-tcp@docker"
+            ],
+            "serverStatus": {
+                "http://172.18.0.2:8080": "UP"
+            }
+        }
+    }
+}

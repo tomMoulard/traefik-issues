@@ -1,0 +1,108 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: whoami
+spec:
+  selector:
+    matchLabels:
+      app: whoami
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: whoami
+    spec:
+      containers:
+        - name: whoami
+          image: traefik/whoami:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      name: whoami
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: whoami
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: whoami2
+spec:
+  selector:
+    matchLabels:
+      app: whoami2
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: whoami2
+    spec:
+      containers:
+        - name: whoami2
+          image: traefik/whoami:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami2
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      name: whoami2
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: whoami2
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: IngressClass
+metadata:
+  name: networkingv1beta1
+spec:
+  controller: traefik.io/ingress-controller
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  name: networkingv1beta1
+
+spec:
+  ingressClassName: networkingv1beta1
+  rules:
+    - host: noop.whoami.localhost
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: whoami
+              servicePort: 80
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  name: networkingv1beta2
+
+spec:
+  ingressClassName: networkingv1beta1
+  rules:
+    - host: whoami.localhost
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: whoami2
+              servicePort: 80

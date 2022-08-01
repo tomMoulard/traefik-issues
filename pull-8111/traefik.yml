@@ -1,0 +1,43 @@
+api:
+  insecure: true
+  # dashboard: true
+
+entryPoints:
+  web:
+    address: ":8081"
+  websecure:
+    address: ":8443"
+  other:
+    address: ":9090"
+
+providers:
+  file:
+    directory: "/home/tm/workspace/traefik/pull-8111/"
+
+log:
+  level: DEBUG
+http:
+  # routers:
+    # Router4:
+      # service: whoamihttp
+      # rule: Host(`http.whoami.localhost`)
+  # services:
+    # whoamihttp:
+      # loadBalancer:
+        # servers:
+          # - url: http://localhost:9999
+tcp:
+  services:
+    whoami:
+      loadBalancer:
+        servers:
+        - address: localhost:8888
+  routers:
+    # Router-1:
+      # entryPoints:
+        # - "other"
+      # rule: "HostSNI(`whoami.localhost`)"
+      # service: "whoami"
+    Router-2:
+      rule: "HostSNI(`*`)"
+      service: "whoami"

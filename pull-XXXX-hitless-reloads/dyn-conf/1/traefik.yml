@@ -1,0 +1,12 @@
+http:
+  routers:
+    Router0:
+      entryPoints:
+      - web
+      service: whoami
+      rule: PathPrefix(`/toto`)
+  services:
+    whoami:
+      loadBalancer:
+        servers:
+          - url: http://localhost:5000

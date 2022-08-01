@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:v2.6
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+      - --metrics.datadog.addrouterslabels=true
+      - --metrics.datadog.address=datadog:8125
+      - --tracing.datadog.localAgentHostPort=datadog:8126
+      - --tracing.serviceName=toto
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+
+  datadog:
+    image: gcr.io/datadoghq/agent:7
+    environment:
+      DD_SITE: datadoghq.eu
+      DD_API_KEY: XXXX
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+
+  app:
+    build: .
+    labels:
+      traefik.http.routers.app.rule: Host(`app.localhost`)

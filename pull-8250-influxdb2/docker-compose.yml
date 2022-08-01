@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:v2.6
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --log.level=DEBUG
+      - --metrics.influxdb2=true
+      - --metrics.influxdb2.token=traefik
+      - --metrics.influxdb2.bucket=traefik
+      - --metrics.influxdb2.org=traefik
+      - --metrics.influxdb2.address=http://influxdb2:8086
+      # - --metrics.influxdb.address=influxdb:8089
+      # - --metrics.influxdb.addrouterslabels=true
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
+
+  whoami:
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+
+  influxdb2:
+    image: influxdb:2.1 # https://hub.docker.com/_/influxdb/
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=traefik
+      - DOCKER_INFLUXDB_INIT_PASSWORD=traefiktraefik
+      - DOCKER_INFLUXDB_INIT_ORG=traefik
+      - DOCKER_INFLUXDB_INIT_BUCKET=traefik
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=traefik
+    labels:
+      traefik.http.routers.influxdb2.rule: Host(`influxdb2.localhost`)
+
+  # influxdb:
+    # image: influxdb:1.8 # https://hub.docker.com/_/influxdb/
+    # environment:
+      # INFLUXDB_UDP_ENABLED: true
+    # volumes:
+      # - ./influxdb:/var/lib/influxdb
+    # labels:
+      # traefik.http.routers.influxdb.rule: Host(`influxdb.localhost`)
+
+  # chronograf:
+    # image: chronograf
+    # volumes:
+      # - ./chronograf:/var/lib/chronograf
+    # labels:
+      # traefik.http.routers.chronograf.rule: Host(`chronograf.localhost`)
+

@@ -1,0 +1,28 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:1.7
+    command:
+      - --configFile=/config.toml
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config.toml:/config.toml
+    tty: true
+  whoami:
+    image: traefik/whoami
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule=Host: whoami.localhost
+      traefik.port: 80
+  zipkin:
+    image: openzipkin/zipkin:2.12.6
+    environment:
+      STORAGE_TYPE: mem
+      JAVA_OPTS: -Dlogging.level.zipkin=DEBUG
+    ports:
+      - 9411:9411

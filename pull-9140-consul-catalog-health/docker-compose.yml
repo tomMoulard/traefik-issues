@@ -1,0 +1,67 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image compiled from https://github.com/traefik/traefik/pull/7407
+    # image: traefik/traefik:latest
+    image: traefik:v2.8
+    tty: true
+    command:
+      - '--api.insecure=true'
+      - '--log.level=DEBUG'
+      - '--providers.consulcatalog.endpoint.address=consul:8500'
+      - '--providers.consulcatalog=true'
+      - '--providers.consulcatalog.connectaware=true'
+      - '--providers.consulcatalog.connectbydefault=true'
+      - '--providers.consulcatalog.servicename=traefik'
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    links:
+      - consul
+
+  consul:
+    image: consul:1.6.2
+    ports:
+      - 8500:8500
+    command: "agent -server -bootstrap -ui -client 0.0.0.0 -hcl 'connect { enabled = true }' -grpc-port 8502 -config-dir /json"
+    volumes:
+      - './json:/json'
+
+  consul-agent:
+    image: consul:1.6.2
+    ports:
+      - 8501:8500
+    command: "agent -retry-join consul -client 0.0.0.0"
+    links:
+      - consul
+
+  whoami1:
+    image: traefik/whoami
+    hostname: whoami1
+
+  whoami-connect:
+    image: traefik/whoami
+    hostname: whoami-connect
+
+  whoami-connect-sidecar:
+    build: envoy
+    ports:
+      - 443
+    links:
+      - consul
+    command: "connect envoy -sidecar-for whoami-connect1"
+    environment:
+      CONSUL_HTTP_ADDR: http://consul:8500
+      CONSUL_GRPC_ADDR: consul:8502
+
+  connect:
+    image: hashicorpnomad/uuid-api:v5
+    links:
+      - consul
+    environment:
+      PORT: 443
+      BIND: 0.0.0.0
+      CONSUL_HTTP_ADDR: http://consul:8500

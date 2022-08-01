@@ -1,0 +1,24 @@
+entryPoints:
+  web:
+    address: :8000
+
+pilot:
+  token: 0031817f-2a16-4f96-aae6-f76d896b1522
+
+api:
+  insecure: true
+
+log:
+  level: DEBUG
+
+providers:
+  docker: {}
+  plugin:
+    propro:
+      pollInterval: 2s
+
+experimental:
+  plugins:
+    propro:
+      moduleName: github.com/traefik/pluginproviderdemo
+      version: v0.2.0

@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  traefik:
+    image: containous/traefik:latest
+    command:
+      - '-l DEBUG'
+      # - '-h'
+      # - '--api.insecure=true'
+      # - '--docker'
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  whoami:
+    image: traefik/whoami
+    labels:
+      # - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:whoami.localhost'
+      - 'traefik.port=80'
+

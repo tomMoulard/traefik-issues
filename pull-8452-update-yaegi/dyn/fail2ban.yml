@@ -1,0 +1,38 @@
+http:
+  middlewares:
+    compress:
+      compress: {}
+    fail2ban:
+      plugin:
+        fail2ban:
+          rules:
+            bantime: 3h
+            enabled: true
+            findtime: 1m
+            maxretry: 3
+            ports: "80:443"
+          whitelist:
+            ip:
+              - ::1
+              - 127.0.0.1
+    my-htransformation:
+      plugin:
+        htransformation:
+          Rules:
+            - Header: X-Traefik-*
+              Name: Header transformation
+              Type: Rename
+              Value: X-custom
+            - Header: NewHeader
+              Name: Header addition
+              Type: Set
+              Value: "True"
+            - Header: Cache-Control
+              Name: Header deletion
+              Type: Del
+            - Header: Accept-Language
+              Name: Header join
+              Sep: ', '
+              Type: Join
+              Values: Foo,Bar
+

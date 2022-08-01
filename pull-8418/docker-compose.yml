@@ -1,0 +1,26 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.5
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+      - '--entrypoints.web.forwardedheaders.insecure'
+      - '--entrypoints.web.address=:80'
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  whoami:
+    # image: traefik/whoamitcp
+    image: traefik/whoami
+    ports:
+      - "8000:80"
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      # - "traefik.http.services.whoami.loadbalancer.passhostheader=false"
+

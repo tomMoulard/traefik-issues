@@ -1,0 +1,25 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.4
+    command:
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+      - '--api.dashboard'
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.traefik.service=api@internal'
+      - 'traefik.http.routers.traefik.rule=Host(`traefik.localhost`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))'
+      - 'traefik.http.routers.traefiks.service=api@internal'
+      - 'traefik.http.routers.traefiks.rule=Host(`slash.traefik.localhost`) && (PathPrefix(`/api/`) || PathPrefix(`/dashboard/`))'
+  whoami:
+    # image: traefik/whoamitcp
+    image: traefik/whoami
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"

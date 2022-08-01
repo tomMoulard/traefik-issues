@@ -1,0 +1,5 @@
+try-1-otel-collector-1  |      -> service.name: STRING(unknown_service:poc-metrics4)
+try-1-otel-collector-1  |      -> telemetry.sdk.language: STRING(go)
+try-1-otel-collector-1  |      -> telemetry.sdk.name: STRING(opentelemetry)
+try-1-otel-collector-1  |      -> telemetry.sdk.version: STRING(1.6.3)
+

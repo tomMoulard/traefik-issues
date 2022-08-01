@@ -1,0 +1,17 @@
+http:
+  routers:
+    my-router:
+      rule: host(`demo.localhost`)
+      service: whoami-pull-8224@docker
+      entryPoints:
+        - web
+      middlewares:
+        - my-plugin
+
+  middlewares:
+    my-plugin:
+      plugin:
+        example:
+          headers:
+            Foo: Bar
+            fizz: Buzz

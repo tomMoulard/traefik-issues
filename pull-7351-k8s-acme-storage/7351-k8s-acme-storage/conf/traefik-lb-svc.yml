@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-ingress-controller
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: traefik
+  labels:
+    app: traefik-lb
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik-lb
+  template:
+    metadata:
+       labels:
+          app: traefik-lb
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - name: traefik
+          tty: true
+          image: traefik:v2.5
+          # image: traefik/traefik:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --log.level=DEBUG
+            - --api.insecure
+            - --entrypoints.web.address=:80
+            - --entrypoints.websecure.address=:443
+            - --entrypoints.websecure.http.tls.certresolver=myresolver
+            - --certificatesresolvers.myresolver.acme.email=tom@traefik.io
+            # - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
+            - --certificatesresolvers.myresolver.acme.tlschallenge=true
+            - --certificatesresolvers.myresolver.acme.storage=/acme/acme.json
+            # - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+            - --providers.kubernetescrd
+          ports:
+            - name: web
+              containerPort: 80
+            - name: websecure
+              containerPort: 443
+            - name: api
+              containerPort: 8080
+
+          volumeMounts:
+            - mountPath: /acme/
+              name: traefik-acme-volume
+
+      volumes:
+        - name: traefik-acme-volume
+          persistentVolumeClaim:
+            claimName: traefik-acme-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: traefik-acme-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+spec:
+  selector:
+    app: traefik-lb
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: api
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: web
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+      name: websecure
+  type: LoadBalancer

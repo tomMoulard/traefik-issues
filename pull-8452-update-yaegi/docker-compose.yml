@@ -1,0 +1,33 @@
+version: '3.6'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:2.5
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+
+      - '--pilot.token=a3099e99-2aa3-4100-b2b0-ef2ebb92b079'
+      - '--providers.file.directory=/dyn/'
+      # - '--entrypoints.web.http.middlewares=fail2ban@file,my-htransformation@file'
+      # - '--entrypoints.web.http.middlewares=my-htransformation@file'
+      # - '--entrypoints.web.http.middlewares=compress@file'
+      - '--experimental.plugins.fail2ban.modulename=github.com/tommoulard/fail2ban'
+      - '--experimental.plugins.fail2ban.version=v0.6.0'
+      - '--experimental.plugins.htransformation.modulename=github.com/tommoulard/htransformation'
+      - '--experimental.plugins.htransformation.version=v0.2.3'
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dyn:/dyn
+    # tty: true
+  whoami:
+    # image: traefik/whoamitcp
+    image: traefik/whoami
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.middlewares=compress@file,fail2ban@file,my-htransformation@file"

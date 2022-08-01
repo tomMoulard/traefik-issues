@@ -1,0 +1,162 @@
+{
+    "resourceMetrics": [
+        {
+            "resource": {
+                "attributes": [
+                    {
+                        "key": "container.id",
+                        "value": {
+                            "stringValue": "2"
+                        }
+                    },
+                    {
+                        "key": "host.name",
+                        "value": {
+                            "stringValue": "Traefik3"
+                        }
+                    },
+                    {
+                        "key": "os.description",
+                        "value": {
+                            "stringValue": "Ubuntu 21.04 (Hirsute Hippo) (Linux Traefik3 5.11.0-49-generic #55-Ubuntu SMP Wed Jan 12 17:36:34 UTC 2022 x86_64)"
+                        }
+                    },
+                    {
+                        "key": "os.type",
+                        "value": {
+                            "stringValue": "linux"
+                        }
+                    },
+                    {
+                        "key": "process.command_args",
+                        "value": {
+                            "arrayValue": {
+                                "values": [
+                                    {
+                                        "stringValue": "/tmp/GoLand/___TestOpenTelemetry_in_github_com_traefik_traefik_v2_pkg_metrics.test"
+                                    },
+                                    {
+                                        "stringValue": "-test.v"
+                                    },
+                                    {
+                                        "stringValue": "-test.paniconexit0"
+                                    },
+                                    {
+                                        "stringValue": "-test.run"
+                                    },
+                                    {
+                                        "stringValue": "^\\\\QTestOpenTelemetry\\\\E$"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "key": "process.executable.name",
+                        "value": {
+                            "stringValue": "___TestOpenTelemetry_in_github_com_traefik_traefik_v2_pkg_metrics.test"
+                        }
+                    },
+                    {
+                        "key": "process.executable.path",
+                        "value": {
+                            "stringValue": "/tmp/GoLand/___TestOpenTelemetry_in_github_com_traefik_traefik_v2_pkg_metrics.test"
+                        }
+                    },
+                    {
+                        "key": "process.owner",
+                        "value": {
+                            "stringValue": "tm"
+                        }
+                    },
+                    {
+                        "key": "process.pid",
+                        "value": {
+                            "intValue": "1084341"
+                        }
+                    },
+                    {
+                        "key": "process.runtime.description",
+                        "value": {
+                            "stringValue": "go version go1.17.8 linux/amd64"
+                        }
+                    },
+                    {
+                        "key": "process.runtime.name",
+                        "value": {
+                            "stringValue": "go"
+                        }
+                    },
+                    {
+                        "key": "process.runtime.version",
+                        "value": {
+                            "stringValue": "go1.17.8"
+                        }
+                    },
+                    {
+                        "key": "telemetry.sdk.language",
+                        "value": {
+                            "stringValue": "go"
+                        }
+                    },
+                    {
+                        "key": "telemetry.sdk.name",
+                        "value": {
+                            "stringValue": "opentelemetry"
+                        }
+                    },
+                    {
+                        "key": "telemetry.sdk.version",
+                        "value": {
+                            "stringValue": "1.6.3"
+                        }
+                    }
+                ]
+            },
+            "scopeMetrics": [
+                {
+                    "scope": {
+                        "name": "github.com/traefik/traefik",
+                        "version": "dev"
+                    },
+                    "metrics": [
+                        {
+                            "name": "traefik_service_open_connections",
+                            "description": "How many open connections exist on a service, partitioned by method and protocol.",
+                            "unit": "1",
+                            "gauge": {
+                                "dataPoints": [
+                                    {
+                                        "attributes": [
+                                            {
+                                                "key": "service",
+                                                "value": {
+                                                    "stringValue": "test"
+                                                }
+                                            }
+                                        ],
+                                        "timeUnixNano": "1651497463673691428",
+                                        "asDouble": 1
+                                    },
+                                    {
+                                        "attributes": [
+                                            {
+                                                "key": "service",
+                                                "value": {
+                                                    "stringValue": "foobar"
+                                                }
+                                            }
+                                        ],
+                                        "timeUnixNano": "1651497463673693266",
+                                        "asDouble": 1
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "schemaUrl": "https://opentelemetry.io/schemas/1.7.0"
+        }
+    ]
+}

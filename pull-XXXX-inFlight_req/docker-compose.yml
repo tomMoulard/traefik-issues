@@ -1,0 +1,23 @@
+version: '3.6'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:2.5
+    command:
+      - '--api.insecure=true'
+      - '--providers.docker'
+      - '--log.level=DEBUG'
+
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  whoami:
+    image: traefik/whoamitcp
+    # image: traefik/whoami
+    labels:
+      - "traefik.tcp.routers.whoami.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.whoami.middlewares=test-ratelimit@docker"
+      - "traefik.tcp.middlewares.test-ratelimit.inflightreq.amount=1"

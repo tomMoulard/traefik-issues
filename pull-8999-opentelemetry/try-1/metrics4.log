@@ -1,0 +1,89 @@
+try-1-otel-collector-1  | 2022-05-02T08:49:30.899Z	INFO	loggingexporter/logging_exporter.go:56	MetricsExporter	{"#metrics": 8}
+try-1-otel-collector-1  | 2022-05-02T08:49:30.899Z	DEBUG	loggingexporter/logging_exporter.go:66	ResourceMetrics #0
+try-1-otel-collector-1  | Resource labels:
+try-1-otel-collector-1  |      -> container.id: STRING(2)
+try-1-otel-collector-1  |      -> host.name: STRING(Traefik3)
+try-1-otel-collector-1  |      -> os.description: STRING(Ubuntu 21.04 (Hirsute Hippo) (Linux Traefik3 5.11.0-49-generic #55-Ubuntu SMP Wed Jan 12 17:36:34 UTC 2022 x86_64))
+try-1-otel-collector-1  |      -> os.type: STRING(linux)
+try-1-otel-collector-1  |      -> process.command_args: ARRAY([/tmp/GoLand/___traefik_OTEL_docker, --log.level=DEBUG, --api.insecure=true, --entrypoints.web.address=:8001, --providers.docker, --tracing.openTelemetry.insecure=true, --tracing.openTelemetry.http=true, --metrics.openTelemetry.insecure=true])
+try-1-otel-collector-1  |      -> process.executable.name: STRING(___traefik_OTEL_docker)
+try-1-otel-collector-1  |      -> process.executable.path: STRING(/tmp/GoLand/___traefik_OTEL_docker)
+try-1-otel-collector-1  |      -> process.owner: STRING(tm)
+try-1-otel-collector-1  |      -> process.pid: INT(284493)
+try-1-otel-collector-1  |      -> process.runtime.description: STRING(go version go1.17.8 linux/amd64)
+try-1-otel-collector-1  |      -> process.runtime.name: STRING(go)
+try-1-otel-collector-1  |      -> process.runtime.version: STRING(go1.17.8)
+try-1-otel-collector-1  |      -> telemetry.sdk.language: STRING(go)
+try-1-otel-collector-1  |      -> telemetry.sdk.name: STRING(opentelemetry)
+try-1-otel-collector-1  |      -> telemetry.sdk.version: STRING(1.6.3)
+try-1-otel-collector-1  | InstrumentationLibraryMetrics #0
+try-1-otel-collector-1  | InstrumentationLibrary github.com/traefik/traefik dev
+try-1-otel-collector-1  | Metric #0
+try-1-otel-collector-1  | Descriptor:
+try-1-otel-collector-1  |      -> Name: traefik_entrypoint_open_connections
+try-1-otel-collector-1  |      -> Description: How many open connections exist on an entrypoint, partitioned by method and protocol.
+try-1-otel-collector-1  |      -> Unit: 1
+try-1-otel-collector-1  |      -> DataType: Gauge
+try-1-otel-collector-1  | NumberDataPoints #0
+try-1-otel-collector-1  | Data point attributes:
+try-1-otel-collector-1  |      -> entrypoint: STRING(web)
+try-1-otel-collector-1  |      -> method: STRING(GET)
+try-1-otel-collector-1  |      -> protocol: STRING(http)
+try-1-otel-collector-1  | StartTimestamp: 1970-01-01 00:00:00 +0000 UTC
+try-1-otel-collector-1  | Timestamp: 2022-05-02 08:49:24.207862237 +0000 UTC
+try-1-otel-collector-1  | Value: -1.000000
+try-1-otel-collector-1  | Metric #1
+try-1-otel-collector-1  | Descriptor:
+try-1-otel-collector-1  |      -> Name: traefik_service_open_connections
+try-1-otel-collector-1  |      -> Description: How many open connections exist on a service, partitioned by method and protocol.
+try-1-otel-collector-1  |      -> Unit: 1
+try-1-otel-collector-1  |      -> DataType: Gauge
+try-1-otel-collector-1  | NumberDataPoints #0
+try-1-otel-collector-1  | Data point attributes:
+try-1-otel-collector-1  |      -> method: STRING(GET)
+try-1-otel-collector-1  |      -> protocol: STRING(http)
+try-1-otel-collector-1  |      -> service: STRING(whoami@docker)
+try-1-otel-collector-1  | StartTimestamp: 1970-01-01 00:00:00 +0000 UTC
+try-1-otel-collector-1  | Timestamp: 2022-05-02 08:49:24.207785151 +0000 UTC
+try-1-otel-collector-1  | Value: -1.000000
+try-1-otel-collector-1  | Metric #2
+try-1-otel-collector-1  | Descriptor:
+try-1-otel-collector-1  |      -> Name: traefik_service_request_duration_seconds
+try-1-otel-collector-1  |      -> Description: How long it took to process the request on a service, partitioned by status code, protocol, and method.
+try-1-otel-collector-1  |      -> Unit: ms
+try-1-otel-collector-1  |      -> DataType: Histogram
+try-1-otel-collector-1  |      -> AggregationTemporality: AGGREGATION_TEMPORALITY_CUMULATIVE
+try-1-otel-collector-1  | HistogramDataPoints #0
+try-1-otel-collector-1  | Data point attributes:
+try-1-otel-collector-1  |      -> code: STRING(200)
+try-1-otel-collector-1  |      -> method: STRING(GET)
+try-1-otel-collector-1  |      -> protocol: STRING(http)
+try-1-otel-collector-1  |      -> service: STRING(whoami@docker)
+try-1-otel-collector-1  | StartTimestamp: 2022-05-02 08:49:20.898143172 +0000 UTC
+try-1-otel-collector-1  | Timestamp: 2022-05-02 08:49:30.898497989 +0000 UTC
+try-1-otel-collector-1  | Count: 1
+try-1-otel-collector-1  | Sum: 0.001267
+try-1-otel-collector-1  | ExplicitBounds #0: 0.005000
+try-1-otel-collector-1  | ExplicitBounds #1: 0.010000
+try-1-otel-collector-1  | ExplicitBounds #2: 0.025000
+try-1-otel-collector-1  | ExplicitBounds #3: 0.050000
+try-1-otel-collector-1  | ExplicitBounds #4: 0.100000
+try-1-otel-collector-1  | ExplicitBounds #5: 0.250000
+try-1-otel-collector-1  | ExplicitBounds #6: 0.500000
+try-1-otel-collector-1  | ExplicitBounds #7: 1.000000
+try-1-otel-collector-1  | ExplicitBounds #8: 2.500000
+try-1-otel-collector-1  | ExplicitBounds #9: 5.000000
+try-1-otel-collector-1  | ExplicitBounds #10: 10.000000
+try-1-otel-collector-1  | Buckets #0, Count: 1
+try-1-otel-collector-1  | Buckets #1, Count: 0
+try-1-otel-collector-1  | Buckets #2, Count: 0
+try-1-otel-collector-1  | Buckets #3, Count: 0
+try-1-otel-collector-1  | Buckets #4, Count: 0
+try-1-otel-collector-1  | Buckets #5, Count: 0
+try-1-otel-collector-1  | Buckets #6, Count: 0
+try-1-otel-collector-1  | Buckets #7, Count: 0
+try-1-otel-collector-1  | Buckets #8, Count: 0
+try-1-otel-collector-1  | Buckets #9, Count: 0
+try-1-otel-collector-1  | Buckets #10, Count: 0
+try-1-otel-collector-1  | Buckets #11, Count: 0
+

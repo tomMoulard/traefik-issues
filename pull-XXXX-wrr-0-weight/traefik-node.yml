@@ -1,0 +1,48 @@
+http:
+  routers:
+    Router0:
+      entryPoints:
+      - http
+      service: wrr1
+      rule: PathPrefix(`/`)
+
+  services:
+
+    fo:
+      failover:
+        service: whoami1@docker
+        failover: whoami2@docker
+        # healthCheck: {}
+
+    wrr1:
+      weighted:
+        # healthCheck: {}
+        # failoverService: whoami2@file
+        services:
+          - name: fo
+            weight: 1
+
+    whoami1:
+      loadBalancer:
+        # failoverService: whoami2@file
+        healthCheck:
+          path: /health
+          interval: 10s
+          timeout: 3s
+        servers:
+          - url: http://whoami-lb1:80
+          - url: http://whoami-lb2:80
+
+    whoami2:
+      loadBalancer:
+        servers:
+          - url: http://whoami-lb3:80
+          - url: http://whoami-lb4:80
+
+    # mirrored-api:
+      # mirroring:
+        # # healthCheck: {}
+        # service: whoami1@file
+        # mirrors:
+        # - name: whoami2@file
+          # percent: 10

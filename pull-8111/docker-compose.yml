@@ -1,0 +1,17 @@
+version: '3.6'
+
+services:
+  whoami:
+    image: traefik/whoamitcp
+    # image: traefik/whoami
+    ports:
+      - "8888:8080"
+    # labels:
+      # - "traefik.enable=true"
+      # - "traefik.http.services.whoami.loadbalancer.passhostheader=true"
+      # - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+  whoamihttp:
+    image: traefik/whoami
+    # image: traefik/whoami
+    ports:
+      - "9999:80"

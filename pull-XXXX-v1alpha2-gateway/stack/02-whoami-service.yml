@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: whoami
+
+  template:
+    metadata:
+      labels:
+        app: whoami
+
+    spec:
+      volumes:
+        - name: certs
+          secret:
+            secretName: supersecret
+      containers:
+        - name: whoami
+          image: traefik/whoami
+          volumeMounts:
+            - mountPath: /certs
+              name: certs
+          args:
+            - "-cert=/certs/tls.crt"
+            - "-key=/certs/tls.key"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami
+
+spec:
+  selector:
+    app: whoami
+
+  ports:
+    - protocol: TCP
+      port: 80
