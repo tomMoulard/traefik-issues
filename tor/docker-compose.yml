@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  tor:
+    build: .
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:v2.7
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      # - --providers.file.directory=/dyn
+      - --log.level=DEBUG
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --certificatesresolvers.myresolver.acme.email=changeme@changeme.org
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.myresolver.acme.httpchallenge=true
+      - --entrypoints.websecure.http.tls.certresolver=myresolver
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - ./dyn:/dyn
+    tty: true
+
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami
+    labels:
+      traefik.http.routers.tor.rule: Host(`tncqomco6r2jyseoqnrtaaatadk6i23m4uqbc5ovlfhg2eybdyawzcad.onion`)
+      traefik.http.routers.tor.service: whoami
+      traefik.http.routers.app.rule: Host(`ssh.couill.eu`)
+      traefik.http.routers.app.service: whoami
+      traefik.http.routers.app.middlewares: tor-headers
+      traefik.http.middlewares.tor-headers.headers.customresponseheaders.Onion-Location: "http://tncqomco6r2jyseoqnrtaaatadk6i23m4uqbc5ovlfhg2eybdyawzcad.onion/"
+      traefik.http.services.whoami.loadbalancer.server.port: 80

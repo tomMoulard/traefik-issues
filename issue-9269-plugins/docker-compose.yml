@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:v2.8.3
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --providers.file.directory=/dyn
+      - --log.level=DEBUG
+
+      # - --experimental.plugins.htransformation.modulename=github.com/tomMoulard/htransformation
+      # - --experimental.plugins.htransformation.version=v0.2.6
+      - --experimental.localPlugins.htransformation.modulename=github.com/tomMoulard/htransformation
+      # - --experimental.plugins.htransformation.version=v0.2.6
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dyn:/dyn
+      - /home/tm/go/src/github.com/tommoulard/htransformation:/plugins-local/src/github.com/tomMoulard/htransformation
+    tty: true
+    # environment:
+      # GODEBUG: http2debug=2
+      # GRPC_TRACE: all
+      # GRPC_VERBOSITY: DEBUG
+
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      traefik.http.routers.whoami.middlewares: my-htransformation@file
+      traefik.http.services.whoami.loadbalancer.server.port: 80

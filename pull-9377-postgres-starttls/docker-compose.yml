@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:v2.9
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      # - --providers.file.directory=/dyn
+      - --log.level=DEBUG
+      # - --entrypoints.web.address=:80
+      # - --entrypoints.websecure.address=:443
+      # - --entrypoints.websecure.http.tls=true
+    ports:
+      - 80:80
+      # - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - ./dyn:/dyn
+    tty: true
+    # environment:
+      # GODEBUG: http2debug=2
+      # GRPC_TRACE: all
+      # GRPC_VERBOSITY: DEBUG
+
+  postgres:
+    image: postgres
+    command: -c ssl=on -c ssl_cert_file=/certs/cert.pem -c ssl_key_file=/certs/key.pem
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./certs:/certs
+    ports:
+      - 5432:5432
+    labels:
+      traefik.tcp.routers.whoami.rule: HostSNI(`*`)
+      traefik.tcp.routers.whoami.tls: true
+      # traefik.http.routers.whoami.middlewares:
+      # traefik.http.services.whoami.loadbalancer.server.port: 80

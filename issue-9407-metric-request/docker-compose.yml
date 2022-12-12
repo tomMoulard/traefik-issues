@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:v2.9
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      # - --providers.file.directory=/dyn
+      - --log.level=DEBUG
+      - --metrics.prometheus.addrouterslabels=true
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - ./dyn:/dyn
+    tty: true
+    # environment:
+      # GODEBUG: http2debug=2
+      # GRPC_TRACE: all
+      # GRPC_VERBOSITY: DEBUG
+
+  whoami-without:
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami-without.rule: Host(`without-whoami.localhost`)
+      traefik.http.services.whoami-without.loadbalancer.server.port: 80
+
+  whoami-with:
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami-with.rule: Host(`with-whoami.localhost`)
+      traefik.http.services.whoami-with.loadbalancer.server.port: 80
+      traefik.http.routers.whoami-with.middlewares: limit
+      traefik.http.middlewares.limit.buffering.maxRequestBodyBytes: 15728640
+      traefik.http.middlewares.limit.buffering.memRequestBodyBytes: 524288
+
+      # traefik.http.routers.whoami-with.middlewares: testHeader
+      # traefik.http.middlewares.testHeader.headers.customrequestheaders.X-Script-Name: test

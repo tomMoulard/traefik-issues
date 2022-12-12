@@ -1,0 +1,2 @@
+(sum(X) by (method) + sum(Y) by (method)) / 2 / 
+ sum(Z) by (method)

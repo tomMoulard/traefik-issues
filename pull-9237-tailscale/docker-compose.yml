@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik/traefik:latest
+    # image: traefik:v2.8
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      # - --providers.file.directory=/dyn
+      - --log.level=DEBUG
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.myresolver.tailscale=true
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run:/var/run
+      # - ./dyn:/dyn
+    tty: true
+    # environment:
+      # GODEBUG: http2debug=2
+      # GRPC_TRACE: all
+      # GRPC_VERBOSITY: DEBUG
+
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    ports:
+      - "81:80"
+    labels:
+      traefik.http.routers.whoami.rule: Host(`traefik3.vulture-mixolydian.ts.net`)
+      traefik.http.routers.whoami.tls.certresolver: myresolver
+      traefik.http.services.whoami.loadbalancer.server.port: 80
+
+  tailscaled:
+    image: tailscale/tailscale:stable
+    command:
+      - tailscaled
+      - -statedir=/state
+      - -verbose=10
+    volumes:
+      - /var/lib:/var/lib
+      - /var/run:/var/run
+      - /dev/net/tun:/dev/net/tun
+      - ./state:/state
+    network_mode: host
+    privileged: true
+
+  tailscale:
+    image: tailscale/tailscale:stable
+    command:
+      - tailscale
+      - up
+      - --authkey=tskey-kD5Hos2CNTRL-K8CW2wiBiDHVaRZaPp31P
+    volumes:
+      - /var/run:/var/run

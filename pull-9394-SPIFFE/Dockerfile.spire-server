@@ -1,0 +1,18 @@
+FROM golang:1.19
+
+ARG SPIRE_VERSION=v1.4.4
+
+VOLUME /conf
+
+WORKDIR /go/src/github.com/spiffe/
+
+RUN git clone https://github.com/spiffe/spire
+
+RUN cd spire && \
+	git checkout ${SPIRE_VERSION} && \
+	useradd -u 1000 workload && \
+	make build
+
+EXPOSE 8081
+
+CMD ["/go/src/github.com/spiffe/spire/bin/spire-server", "run", "-config", "/conf/server/server.conf"]

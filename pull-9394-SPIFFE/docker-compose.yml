@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  # traefik:
+    # # image: traefik/traefik:latest
+    # image: traefik:v2.8
+    # command:
+      # - --api.insecure=true
+      # - --providers.docker
+      # # - --providers.file.directory=/dyn
+      # - --log.level=DEBUG
+    # ports:
+      # - "80:80"
+      # - "8080:8080"
+    # volumes:
+      # - /var/run/docker.sock:/var/run/docker.sock
+      # # - ./dyn:/dyn
+    # tty: true
+    # # environment:
+      # # GODEBUG: http2debug=2
+      # # GRPC_TRACE: all
+      # # GRPC_VERBOSITY: DEBUG
+
+  spire-server:
+    image: gcr.io/spiffe-io/spire-server:1.4.4
+    command: -config /opt/spire/conf/server/server.conf
+    tty: true
+    volumes:
+      - ./server:/opt/spire/conf/server
+
+  spire-agent:
+    image: gcr.io/spiffe-io/spire-agent:1.4.4
+    command: -config /opt/spire/conf/agent/agent.conf
+    tty: true
+    depends_on:
+      - spire-server
+    volumes:
+      - ./agent:/opt/spire/conf/agent
+
+  go-server:
+    image: tommoulard/go-server
+    build:
+      context: ./go-server/
+      dockerfile: ./Dockerfile

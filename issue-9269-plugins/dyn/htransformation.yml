@@ -1,0 +1,23 @@
+http:
+  middlewares:
+    my-htransformation:
+      plugin:
+        htransformation:
+          Rules:
+            - Header: X-Forwarded-Host
+              Type: RewriteValueRule
+              Value: "whoami.(.*)"
+              ValueReplace: "$1"
+
+            - Header: X-Client-Subdomain
+              Type: Join
+              Sep: "."
+              HeaderPrefix: "^"
+              # Values: "^X-Forwarded-Host,^X-Forwarded-Proto"
+              Values:
+                - "^X-Forwarded-Host"
+                - "^X-Forwarded-Proto"
+
+            - Header: X-Client-Subdomain
+              Type: Rename
+              Value: X-Forwarded-Host

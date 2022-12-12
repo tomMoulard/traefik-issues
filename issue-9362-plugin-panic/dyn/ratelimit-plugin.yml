@@ -1,0 +1,13 @@
+http:
+  middlewares:
+    ratelimit:
+      plugin:
+        ratelimit:
+          ipFromHeaderName: "Ali-Cdn-Real-Ip"
+          uidFromHeaderName: "X-Uid"
+          logLevel: DEBUG
+          average: 5
+          period: 1
+          burst: 5
+          excludedIPs:
+            - 1.1.1.1

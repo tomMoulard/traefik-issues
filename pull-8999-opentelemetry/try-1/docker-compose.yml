@@ -2,14 +2,14 @@ version: '3.9'
 
 services:
   traefik:
-    image: traefik/traefik:latest
+    image: traefik-dev:otlp2
     # image: traefik:v2.7
     command:
       - --api.insecure=true
       - --providers.docker
       # - --providers.file.directory=/dyn
       - --log.level=DEBUG
-      - --metrics.openTelemetry.address=http://otel-collector:4318/v1/metrics
+      - --metrics.openTelemetry.endpoint=http://otel-collector:4318/v1/metrics
       - --tracing.openTelemetry.endpoint=otel-collector:4318
       - --tracing.openTelemetry.insecure=true
     ports:
@@ -36,3 +36,18 @@ services:
       - ./collector-config.yml:/collector-config.yml
     ports:
       - "4317-4319:4317-4319"
+  # zipkin:
+    # image: openzipkin/zipkin
+    # command: --logging.level.zipkin2=DEBUG
+    # labels:
+      # traefik.http.routers.zipkin.rule: Host(`zipkin.localhost`)
+      # traefik.http.services.zipkin.loadbalancer.server.port: 9411
+
+  # jaeger:
+    # image: jaegertracing/all-in-one:1
+    # environment:
+      # COLLECTOR_ZIPKIN_HOST_PORT: ":9411"
+      # COLLECTOR_OTLP_ENABLED: true
+    # labels:
+      # traefik.http.routers.jaeger.rule: Host(`jaeger.localhost`)
+      # traefik.http.services.jaeger.loadbalancer.server.port: 16686

@@ -1,0 +1,73 @@
+version: '3.9'
+
+services:
+  traefik:
+    # image: traefik/traefik:latest
+    image: traefik:v2.9
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --metrics.prometheus
+      # - --providers.file.directory=/dyn
+      - --log.level=DEBUG
+      # - --entrypoints.web.address=:80
+      # - --entrypoints.websecure.address=:443
+      # - --entrypoints.websecure.http.tls=true
+    ports:
+      - 80:80
+      # - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - ./dyn:/dyn
+    tty: true
+    # environment:
+      # GODEBUG: http2debug=2
+      # GRPC_TRACE: all
+      # GRPC_VERBOSITY: DEBUG
+
+  whoami:
+    # image: traefik/whoamitcp # https://github.com/traefik/whoamitcp
+    # image: traefik/whoamiudp # https://github.com/traefik/whoamiudp
+    image: traefik/whoami # https://github.com/traefik/whoami
+    command: -name whoami
+    labels:
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
+      # traefik.http.routers.whoami.middlewares:
+      # traefik.http.services.whoami.loadbalancer.server.port: 80
+
+  grafana:
+    image: grafana/grafana-oss:main
+    volumes:
+      - ./grafana:/var/lib/grafana
+    user: 1000:1000
+    restart: always
+    depends_on:
+      - prometheus
+    environment:
+      GF_METRICS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_BASIC_ENABLED: false
+      GF_AUTH_DISABLE_LOGIN_FORM: true
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    labels:
+      traefik.http.routers.grafana.rule: Host(`grafana.localhost`)
+
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+    user: 1000:1000
+    restart: always
+    volumes:
+      - ./prometheus/data:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    labels:
+      traefik.http.routers.prometheus.rule: Host(`prometheus.localhost`)
+    # ports:
+      # - "9090:9090"

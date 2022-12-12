@@ -6,20 +6,28 @@ receivers:
       grpc:
         endpoint: 0.0.0.0:4317
 
-  jaeger:
-    protocols:
-      grpc:
-        endpoint: 0.0.0.0:4319
+  # jaeger:
+    # protocols:
+      # grpc:
+        # endpoint: 0.0.0.0:4319
 
 exporters:
   logging:
     loglevel: debug
+  # zipkin:
+    # endpoint: "http://zipkin:9411/api/v2/spans"
+  # jaeger:
+    # endpoint: "jaeger:14250"
+    # tls:
+      # insecure: true
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       exporters: [logging]
+      # exporters: [jaeger,zipkin]
     metrics:
       receivers: [otlp]
       exporters: [logging]
+
