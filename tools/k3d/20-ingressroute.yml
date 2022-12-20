@@ -1,0 +1,15 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: simplecrd
+  namespace: default
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`crd.localhost`)
+    kind: Rule
+    services:
+    - name: whoami
+      port: 80
